@@ -3,6 +3,7 @@ var Char = function (proto, skillTagCnt) {
     this.name = proto.name;
     this.pay = proto.pay;
     this.mentalMax = proto.mentalMax;
+    this.workPower = proto.workPower;
     this.mental = this.mentalMax;
     this.imgSrc = 'assets/mon/mon_' + FormatNumberLength(proto.imgNumber, 3) + '.png';
     this.tagList = [];
@@ -31,7 +32,7 @@ Char.prototype.Update = function () {
     }
 
     this.ChangeMental(-1);
-    var workPower = 10;
+    var workPower = this.workPower;
 
     var workObj = WorkList.GetById(this.allowedWorkId);
     var i, j;
@@ -39,6 +40,7 @@ Char.prototype.Update = function () {
         var workTag = workObj.tagList[i];
         for (j in this.tagList) {
             var charTag = this.tagList[j];
+
 //            console.log(workTag, charTag);
         }
     }
@@ -81,8 +83,10 @@ CharList.GenerateRandomChar = function (lv) {
     var name = g_nameTable[Math.floor(Math.random() * g_nameTable.length)];
     var obj = new Char({
         name: name.name,
-        pay: 10, mentalMax: 100,
-        imgNumber: 5 + Math.floor(Math.random() * 4,)
+        pay: 10,
+        mentalMax: 100,
+        imgNumber: randomRange(1, 90),
+        workPower: randomRange(8, 12)
     }, skillCnt);
     CharList.Add(obj);
 
