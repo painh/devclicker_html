@@ -69,8 +69,11 @@ function FloatingText(eleObj, text, option) {
     option = option || {};
 
     var offset = eleObj.offset();
+    var windowTop = $(window).scrollTop();
+    var top = offset.top - windowTop;
+    console.log($(window).scrollTop());
     var left = offset.left  + randomRange(0, eleObj.width());
-    var style = 'top:' + offset.top + "px; left : " + left + 'px;';
+    var style = 'top:' + top + "px; left : " + left + 'px;';
     if (option.bg_color)
         style += 'background-color:' + option.bg_color + ';';
     var html = '<p class="floatingText" style="' + style + '">' + text + '</p>';
@@ -80,6 +83,7 @@ function FloatingText(eleObj, text, option) {
         top: option.top || -10,
         opacity: option.opacity || 0
     };
+    ani.top -= windowTop;
 
     if (option.top == 0)
         delete ani['top'];
