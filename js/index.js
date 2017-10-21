@@ -21,6 +21,7 @@ function AddChar(id, name, pay, imgSrc, tagList) {
     }
 
     ele.find('.skillTagList').html(html);
+    RefreshHeights();
 }
 
 function RemoveChar(id) {
@@ -63,6 +64,7 @@ function AddWork(id, name, workAmount, tagList) {
     }
 
     ele.find('.workSkillList').html(html);
+    RefreshHeights();
 }
 
 function FloatingText(eleObj, text, option) {
@@ -229,9 +231,13 @@ function RefreshHeights() {
     var windowHeight = $(window).height();
     var topHeight = $('#divTop').outerHeight();
     var height = windowHeight - topHeight;
-    $("#charList").outerHeight(height);
-    $("#workList").outerHeight(height);
-    $("#projectList").outerHeight(height);
+
+    if ($("#charList").outerHeight() > height)
+        $("#charList").outerHeight(height);
+    if ($("#workList").outerHeight() > height)
+        $("#workList").outerHeight(height);
+    if ($("#projectList").outerHeight() > height)
+        $("#projectList").outerHeight(height);
 }
 
 $(document).ready(function () {
@@ -287,7 +293,7 @@ $(document).ready(function () {
         Notify('해당 직원을 업무에서 제외했습니다.', NOTIFY_SUCCESS);
     });
 
-    $(".btnWorkDone").click(function() {
+    $(".btnWorkDone").click(function () {
         var id = $(this).attr('data-id');
         var workObj = WorkList.GetById(id);
         Notify(workObj.name + "(을)를 완료 했습니다!", NOTIFY_SUCCESS);
@@ -325,7 +331,7 @@ $(document).ready(function () {
         RefreshCharCard(charObj);
     });
 
-    $( window ).resize(function() {
+    $(window).resize(function () {
         RefreshHeights();
     });
 
