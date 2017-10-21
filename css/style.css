@@ -110,7 +110,7 @@ a {
 }
 
 .floatingText {
-    z-index: auto;
+    z-index: 99999;
     position: fixed;
     font-size: 150%;
     color: rgb(98, 98, 98);

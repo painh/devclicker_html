@@ -68,11 +68,13 @@ function AddWork(id, name, workAmount, tagList) {
 function FloatingText(eleObj, text, option) {
     option = option || {};
 
-    var style = '';
+    var style = 'top:' + eleObj.offset().top + "; left : " + eleObj.offset().left + ';';
+    console.log(style);
     if (option.bg_color)
         style = 'background-color:' + option.bg_color + ';';
     var html = '<p class="floatingText" style="' + style + '">' + text + '</p>';
-    var obj = $(html).appendTo(eleObj);
+    var obj = $(html).appendTo($('body'));
+    obj.offset(eleObj.offset());
 
     var ani = {
         top: option.top || -10,
