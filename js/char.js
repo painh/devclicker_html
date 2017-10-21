@@ -46,6 +46,19 @@ CharList.Add = function (newCharObj) {
     AddChar(newCharObj.id, newCharObj.name, newCharObj.GetPay(), newCharObj.GetImg(), newCharObj.tagList);
 };
 
+CharList.GenerateRandomChar = function (lv) {
+    var skillCnt = lv;
+
+    var name = g_nameTable[Math.floor(Math.random() * g_nameTable.length)];
+    var obj = new Char({
+        name: name.name,
+        pay: 10, mentalMax: 100,
+        imgNumber: 5 + Math.floor(Math.random() * 4,)
+    }, skillCnt);
+    CharList.Add(obj);
+
+}
+
 CharList.GetById = function (id) {
     return CharList[id];
 };

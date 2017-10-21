@@ -59,26 +59,39 @@ function AddWork(id, name, workAmount, tagList) {
     html = '';
     for (i in tagList) {
         var tag = tagList[i];
-        console.log(tag);
         html += '<div class="skillTag">' + tag.name + '[' + tag.lv + ']</div>';
     }
-
-    console.log(html);
 
     ele.find('.workSkillList').html(html);
 }
 
-function FloatingText(eleObj, text) {
-    var obj = $('<p class="floatingText">' + text + '</p>').appendTo(eleObj);
+function FloatingText(eleObj, text, option) {
+    option = option || {};
 
-    console.log('sdfsad');
-    obj.animate({
-            top: -10,
-            opacity: 0
-        }, 1000, "swing",
+    var style = '';
+    if (option.bg_color)
+        style = 'background-color:' + option.bg_color + ';';
+    var html = '<p class="floatingText" style="' + style + '">' + text + '</p>';
+    var obj = $(html).appendTo(eleObj);
+
+    var ani = {
+        top: -10,
+        opacity: option.opacity || 0
+    };
+
+    if (option.top == 0)
+        delete ani['top'];
+
+    obj.animate(ani , option.delay || 1000, "swing",
         function () {
             $(this).remove();
         });
+}
+
+function Quotes(charId, text) {
+    $(".charCard[data-id=" + charId + "]").each(function () {
+        FloatingText($(this), text, {top : 0, opacity: 1, delay: 3000, bg_color: '#fff'});
+    });
 }
 
 //https://stackoverflow.com/questions/1127905/how-can-i-format-an-integer-to-a-specific-length-in-javascript
@@ -173,8 +186,8 @@ function RefreshCharCard(charObj) {
 
 function AddCharFaceToWork(workId, charObj) {
     var workEle = $(".workCard[data-id=" + workId + "]");
-    workEle.find(".workCharList").prepend('<img class="btnCharDetail charFace img-rounded"  data-id='+charObj.id+' src="'+charObj.imgSrc
-        +'"/>');
+    workEle.find(".workCharList").prepend('<img class="btnCharDetail charFace img-rounded"  data-id=' + charObj.id + ' src="' + charObj.imgSrc
+        + '"/>');
 }
 
 $(document).ready(function () {
@@ -194,7 +207,9 @@ $(document).ready(function () {
     }, 1000);
 
     $("#btnGacha").click(function () {
-            Game.Gacha();
+            var lv = 1;
+            var obj = Game.Gacha(lv);
+            Quotes(obj.id, "대사 테스트 가나다라");
         }
     );
 
@@ -228,5 +243,4 @@ $(document).ready(function () {
 
         RefreshCharCard(charObj);
     });
-
 });

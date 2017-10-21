@@ -110,10 +110,11 @@ a {
 }
 
 .floatingText {
-    position: absolute;
+    z-index: auto;
+    position: fixed;
     font-size: 150%;
     color: rgb(98, 98, 98);
-    background-color: rgba(255, 255, 255, 0.5);;
+    background-color: rgba(255, 255, 255, 0.5);
     border-style: solid;
     border-width: 1px;
     border-color: #000;
