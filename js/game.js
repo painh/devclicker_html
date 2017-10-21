@@ -18,11 +18,12 @@ Game.Create = function () {
 Game.Update = function () {
     var now = new Date();
 //    console.log(Game.prevTimer.getTime(), now.getTime(), now.getTime() - Game.prevTimer.getTime());
+    var dt = now - Game.prevTimer;
+    CharList.Update(dt);
+    WorkList.Update(dt);
+
     Game.prevTimer = now;
     RefreshGachaBtn(Game.GachaTimer);
-
-    CharList.Update();
-    WorkList.Update();
 };
 
 

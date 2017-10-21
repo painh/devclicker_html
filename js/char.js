@@ -25,7 +25,7 @@ Char.prototype.ChangeMental = function (d) {
     ChangeMentalFloatingText(this.id, d, this.mental, this.mentalMax);
 };
 
-Char.prototype.Update = function () {
+Char.prototype.Update = function (dt) {
     if (this.allowedWorkId == -1) {
         this.ChangeMental(+1);
         return;
@@ -35,15 +35,19 @@ Char.prototype.Update = function () {
     var workPower = this.workPower;
 
     var workObj = WorkList.GetById(this.allowedWorkId);
+    workObj.Work(workPower);
+
     var i, j;
     for (i in workObj.tagList) {
         var workTag = workObj.tagList[i];
         for (j in this.tagList) {
             var charTag = this.tagList[j];
-
-//            console.log(workTag, charTag);
+            if (workTag.name == charTag.name) {
+                workObj.Work(workPower);
+            }
         }
     }
+
 
     RefreshCharCard(this);
 
@@ -98,9 +102,7 @@ CharList.GetById = function (id) {
 };
 
 CharList.Fire = function (id) {
-    console.log(CharList.list);
     delete CharList.list[id];
-    console.log(CharList.list);
     RemoveChar(id);
 };
 
@@ -108,10 +110,10 @@ CharList.Msg = function (id, text) {
 
 };
 
-CharList.Update = function () {
+CharList.Update = function (dt) {
     var i;
     for (i in CharList.list) {
         var char = CharList.list[i];
-        char.Update();
+        char.Update(dt);
     }
 };

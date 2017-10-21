@@ -210,6 +210,20 @@ function ChangeMentalFloatingText(charId, d, now, max) {
     FloatingText(ele, d, option);
 }
 
+function ChangeWorkFloatingText(workId, d, now, max) {
+    var ele = $(".workCard[data-id=" + workId + "]").find('.progress');
+    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#00f'};
+    var percent = (now / max * 100) + '%';
+
+    ele.find(".progress-bar").attr('style', 'width:' + percent);
+    ele.find(".progress-bar").text('업무진행[' + now + '/' + max + ']');
+
+    FloatingText(ele, d, option);
+}
+
+
+
+
 $(document).ready(function () {
     $(document).on('click', '.skillTag', function () {
         $("#skillDetail").modal();
