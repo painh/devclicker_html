@@ -225,6 +225,14 @@ function ChangeWorkFloatingText(workId, d, now, max) {
     FloatingText(ele, d, option);
 }
 
+function RefreshHeights() {
+    var windowHeight = $(window).height();
+    var topHeight = $('#divTop').outerHeight();
+    var height = windowHeight - topHeight;
+    $("#charList").outerHeight(height);
+    $("#workList").outerHeight(height);
+    $("#projectList").outerHeight(height);
+}
 
 $(document).ready(function () {
     $(document).on('click', '.skillTag', function () {
@@ -316,4 +324,10 @@ $(document).ready(function () {
 
         RefreshCharCard(charObj);
     });
+
+    $( window ).resize(function() {
+        RefreshHeights();
+    });
+
+    RefreshHeights();
 });
