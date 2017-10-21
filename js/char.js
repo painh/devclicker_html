@@ -8,6 +8,7 @@ var Char = function (proto, skillTagCnt) {
     this.imgSrc = 'assets/mon/mon_' + FormatNumberLength(proto.imgNumber, 3) + '.png';
     this.tagList = [];
     this.allowedWorkId = -1;
+    this.isDead = false;
 
     for (var i = 0; i < skillTagCnt; ++i) {
         var name = randomPick(skillTagList);
@@ -16,12 +17,15 @@ var Char = function (proto, skillTagCnt) {
         else
             this.tagList[name] = {name: name, lv: 1};
     }
+    this.tagList['client'] = {name:'client', lv : randomRange(1, 10)};
 };
 
 Char.id = 0;
 
 Char.prototype.ChangeMental = function (d) {
     this.mental = Math.min(this.mental + d, this.mentalMax);
+    if(this.mental <= 0 )
+        this.isDead = true;
     ChangeMentalFloatingText(this.id, d, this.mental, this.mentalMax);
 };
 
@@ -31,7 +35,7 @@ Char.prototype.Update = function (dt) {
         return;
     }
 
-    this.ChangeMental(-1);
+    this.ChangeMental(-10);
     var workPower = this.workPower;
 
     var workObj = WorkList.GetById(this.allowedWorkId);
@@ -43,7 +47,7 @@ Char.prototype.Update = function (dt) {
         for (j in this.tagList) {
             var charTag = this.tagList[j];
             if (workTag.name == charTag.name) {
-                workObj.Work(workPower);
+                workObj.Work(workPower + Math.max(Math.round(workPower * ((charTag.lv - workTag.lv) / workTag.lv))), 0);
             }
         }
     }
@@ -112,8 +116,25 @@ CharList.Msg = function (id, text) {
 
 CharList.Update = function (dt) {
     var i;
+    var deadList = {};
+
     for (i in CharList.list) {
         var char = CharList.list[i];
         char.Update(dt);
+        if(char.isDead)
+            deadList[char.id] = char;
     }
+
+    for (i in deadList) {
+        var char = deadList[i];
+        Notify(char.name + '(은)는 멘탈이 터져서 퇴사했습니다.', NOTIFY_DANGER);
+        RemoveChar(char.id);
+        delete CharList.list[i];
+    }
+};
+
+CharList.Release = function(id) {
+    var charObj = CharList.GetById(id);
+    charObj.allowedWorkId = -1;
+    RefreshCharCard(charObj);
 };

@@ -71,7 +71,7 @@ function FloatingText(eleObj, text, option) {
     var offset = eleObj.offset();
     var windowTop = $(window).scrollTop();
     var top = offset.top - windowTop;
-    var left = offset.left  + randomRange(0, eleObj.width());
+    var left = offset.left + randomRange(0, eleObj.width());
     var style = 'top:' + top + "px; left : " + left + 'px;';
     if (option.bg_color)
         style += 'background-color:' + option.bg_color + ';';
@@ -79,7 +79,7 @@ function FloatingText(eleObj, text, option) {
     var obj = $(html).appendTo($('body'));
 
     var ani = {
-        top: option.top || offset.top +  -10,
+        top: option.top || offset.top + -10,
         opacity: option.opacity || 0
     };
     ani.top -= windowTop;
@@ -222,8 +222,6 @@ function ChangeWorkFloatingText(workId, d, now, max) {
 }
 
 
-
-
 $(document).ready(function () {
     $(document).on('click', '.skillTag', function () {
         $("#skillDetail").modal();
@@ -267,8 +265,14 @@ $(document).ready(function () {
             Notify('해당 직원은 놀고 있습니다.', NOTIFY_DANGER);
             return;
         }
+        var workId = charObj.allowedWorkId;
         CharList.Release(id);
-        $()
+
+        $(".workCard[data-id=" + workId + "]").find(".charFace").fadeOut(function () {
+            $(this).remove();
+        });
+
+        Notify('해당 직원을 업무에서 제외했습니다.', NOTIFY_SUCCESS);
     });
 
     $(document).on('click', '.btnCharAddToWork', function () {
