@@ -189,4 +189,13 @@ $(document).ready(function () {
         }
     });
 
+    $(document).on('click', '.btnCharAddToWork', function () {
+        var char = $('.charCard.charCardSelected');
+        if (char.length == 0) {
+            Notify('직원을 먼저 선택해주세요', NOTIFY_DANGER);
+            return;
+        }
+
+    });
+
 });
