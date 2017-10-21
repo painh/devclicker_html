@@ -71,7 +71,6 @@ function FloatingText(eleObj, text, option) {
     var offset = eleObj.offset();
     var windowTop = $(window).scrollTop();
     var top = offset.top - windowTop;
-    console.log($(window).scrollTop());
     var left = offset.left  + randomRange(0, eleObj.width());
     var style = 'top:' + top + "px; left : " + left + 'px;';
     if (option.bg_color)
@@ -80,7 +79,7 @@ function FloatingText(eleObj, text, option) {
     var obj = $(html).appendTo($('body'));
 
     var ani = {
-        top: option.top || -10,
+        top: option.top || offset.top +  -10,
         opacity: option.opacity || 0
     };
     ani.top -= windowTop;
@@ -177,6 +176,7 @@ function Notify(message, type) {
             align: 'center'
         },
         delay: 1000,
+        z_index: 2000,
     });
 }
 
@@ -216,7 +216,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.btnCharDetail', function () {
-        ShowCharDetail(this, $(this).attr('data-id'));
+        ShowCharDetail($(this), $(this).attr('data-id'));
     });
 
     $(document).on('click', '.charCard', function () {
