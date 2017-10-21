@@ -1,24 +1,4 @@
-var skillTagList = ['c++',
-    'java',
-    'design',
-    'server',
-    'client',
-    'excel',
-    'photoshop',
-    'excel',
-    '3dmax',
-    'vim',
-    'emacs',
-    'linux',
-    'windows',
-    'visualstudio',
-    'illust',
-    'qa',
-    'cs',
-    'bi',
-    'platform',
-    'pixelart'
-];
+var skillTagList = ['client', 'server', 'illust', 'qa', 'Scenario', '3d'];
 
 var Char = function (proto, skillTagCnt) {
     this.id = Char.id++;
@@ -28,9 +8,12 @@ var Char = function (proto, skillTagCnt) {
     this.imgSrc = 'assets/mon/mon_' + FormatNumberLength(proto.imgNumber, 3) + '.png';
     this.tagList = [];
 
-    var chooser = randomNoRepeats(skillTagList);
     for (var i = 0; i < skillTagCnt; ++i) {
-        this.tagList.push({name: chooser(), lv: 1});
+        var name = randomPick(skillTagList);
+        if (this.tagList.hasOwnProperty(name))
+            this.tagList[name].lv++;
+        else
+            this.tagList[name] = {name: name, lv: 1};
     }
 };
 

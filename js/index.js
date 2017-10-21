@@ -58,19 +58,40 @@ function FormatNumberLength(num, length) {
     return r;
 }
 
+//https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+//thanks
+function shuffle(origin) {
+    var a = origin.slice(0);
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+
+    return a;
+}
+
 //https://stackoverflow.com/questions/17891173/javascript-how-to-efficiently-randomly-select-array-item-without-repeats
 //thanks
 function randomNoRepeats(array) {
     var copy = array.slice(0);
     return function () {
         if (copy.length < 1) {
-            copy = array.slice(0);
+            copy = shuffle(array.slice(0));
         }
         var index = Math.floor(Math.random() * copy.length);
         var item = copy[index];
         copy.splice(index, 1);
         return item;
     };
+}
+
+function randomPick(a)
+{
+    var index = Math.floor(Math.random() * a.length);
+    return a[index];
 }
 
 var NOTIFY_SUCCESS = 'success';

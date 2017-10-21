@@ -26,5 +26,5 @@ Game.Gacha = function () {
         name: name.name,
         pay: 10, mentalMax: 100,
         imgNumber: 5 + Math.floor(Math.random() * 4,)
-    }, 10));
+    }, 7));
 };
