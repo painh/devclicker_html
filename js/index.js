@@ -71,7 +71,6 @@ function FloatingText(eleObj, text, option) {
     var offset = eleObj.offset();
     var left = offset.left  + randomRange(0, eleObj.width());
     var style = 'top:' + offset.top + "px; left : " + left + 'px;';
-    console.log(style);
     if (option.bg_color)
         style += 'background-color:' + option.bg_color + ';';
     var html = '<p class="floatingText" style="' + style + '">' + text + '</p>';
