@@ -1,0 +1,118 @@
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+p {
+    line-height:0.5;
+}
+
+a {
+    color: #00B7FF;
+}
+
+#charCardTemplate {
+    display : none;
+}
+
+#workCardTemplate {
+    display : none;
+}
+#grandGameDevelop {
+    background-color: lightsalmon;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+
+#charList {
+    background-color: #b7ff76;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+
+#workList {
+    background-color: lightskyblue;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+
+.charCard {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000;
+    border-radius: 1px;
+    background: #fff;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+
+}
+
+.skillTag {
+    display: inline-block;
+    border-radius: 1px;
+    background: #518eff;
+    font-size: 50%;
+    color: #fff;
+    padding-top: 2px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    margin-top: 2px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    margin-left: 2px;
+}
+
+.charFace {
+    max-width: 50px;
+    min-width: 50px;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000;
+}
+
+.workCard {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000;
+    border-radius: 1px;
+    background: #ff6e39;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+
+.workCharList {
+    margin-top: 2px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    margin-left: 2px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+
+.floatingText {
+    position: absolute;
+    font-size: 150%;
+    color: rgb(98, 98, 98);
+    background-color: rgba(255, 255, 255, 0.5);;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000;
+    border-radius: 5px;
+}
+
+.charCardSelected {
+    background-color: orange;
+}
