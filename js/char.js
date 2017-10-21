@@ -10,6 +10,8 @@ var Char = function (proto, skillTagCnt) {
     this.allowedWorkId = -1;
     this.isDead = false;
 
+    this.workPower = 1000;
+
     for (var i = 0; i < skillTagCnt; ++i) {
         var name = randomPick(skillTagList);
         if (this.tagList.hasOwnProperty(name))
@@ -17,16 +19,19 @@ var Char = function (proto, skillTagCnt) {
         else
             this.tagList[name] = {name: name, lv: 1};
     }
-    this.tagList['client'] = {name:'client', lv : randomRange(1, 10)};
+    this.tagList['client'] = {name: 'client', lv: randomRange(1, 10)};
 };
 
 Char.id = 0;
 
 Char.prototype.ChangeMental = function (d) {
+    var prev = this.mental;
     this.mental = Math.min(this.mental + d, this.mentalMax);
-    if(this.mental <= 0 )
+    if (this.mental <= 0)
         this.isDead = true;
-    ChangeMentalFloatingText(this.id, d, this.mental, this.mentalMax);
+
+    if (prev != this.mental)
+        ChangeMentalFloatingText(this.id, d, this.mental, this.mentalMax);
 };
 
 Char.prototype.Update = function (dt) {
@@ -35,11 +40,13 @@ Char.prototype.Update = function (dt) {
         return;
     }
 
-    this.ChangeMental(-10);
     var workPower = this.workPower;
-
     var workObj = WorkList.GetById(this.allowedWorkId);
+    if (workObj.WorkDone())
+        return;
+
     workObj.Work(workPower);
+    this.ChangeMental(-10);
 
     var i, j;
     for (i in workObj.tagList) {
@@ -52,9 +59,7 @@ Char.prototype.Update = function (dt) {
         }
     }
 
-
     RefreshCharCard(this);
-
 };
 
 Char.prototype.GetPay = function () {
@@ -83,6 +88,8 @@ var CharList = {
 CharList.Add = function (newCharObj) {
     CharList.list[newCharObj.id] = newCharObj;
     AddChar(newCharObj.id, newCharObj.name, newCharObj.GetPay(), newCharObj.GetImg(), newCharObj.tagList);
+    ChangeMentalFloatingText(newCharObj.id, 0, newCharObj.mental, newCharObj.mentalMax);
+
 };
 
 CharList.GenerateRandomChar = function (lv) {
@@ -121,7 +128,7 @@ CharList.Update = function (dt) {
     for (i in CharList.list) {
         var char = CharList.list[i];
         char.Update(dt);
-        if(char.isDead)
+        if (char.isDead)
             deadList[char.id] = char;
     }
 
@@ -133,8 +140,18 @@ CharList.Update = function (dt) {
     }
 };
 
-CharList.Release = function(id) {
+CharList.Release = function (id) {
     var charObj = CharList.GetById(id);
     charObj.allowedWorkId = -1;
     RefreshCharCard(charObj);
+};
+
+CharList.WorkRemoved = function (id) {
+    var i;
+    for (i in CharList.list) {
+        var charObj = CharList.list[i];
+        if (charObj.allowedWorkId == id) {
+            CharList.Release(charObj.id);
+        }
+    }
 };

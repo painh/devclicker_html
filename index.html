@@ -40,7 +40,7 @@
                 <h4 class="modal-title">스킬 태그 정보</h4>
             </div>
             <div class="modal-body">
-                 <textarea style="width:100%;"  rows="6">스킬 태그는
+                 <textarea style="width:100%;" rows="6">스킬 태그는
 스킬명[레벨]
 의 형태로 표시됩니다.
 직원에게 업무를 할 당 할때, 해당 태그가 있으면 더 많은 양의 일을 처리합니다.
@@ -58,21 +58,7 @@
     <div class="grid">
         <div class="row">
             <div id="grandGameDevelop" class="col-md-12">
-                <h1>게임명</h1>
                 <h2>$9999999</h2>
-
-                <h2>timer</h2>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped active progress-bar-danger" role="progressbar"
-                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
-                    </div>
-                </div>
-
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped active" role="progressbar"
-                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
-                    </div>
-                </div>
 
                 <div>
                     <button id="btnGacha" type="button" class="btn btn-default btn-primary" disabled="true">가챠</button>
@@ -113,7 +99,7 @@
                 </div>
 
                 <div id="workCardTemplate">
-                    <div class="workCard col-md-12">
+                    <div class="workCard col-md-12" data-id>
                         <div class="col-md-12">
                             <p>[<span class="workName">WorkName</span>]</p>
                             <p>업무량 [<span class="workAmount">workAmount</span>]</p>
@@ -124,12 +110,48 @@
                             </div>
                             <div class="workSkillList"></div>
                             <div class="workCharList">
-                                <button type="button" class="btn btn-default btnCharAddToWork" data-id>
-                                    <span class="glyphicon glyphicon-plus"></span>업무할당
-                                </button>
                             </div>
-                            <button type="button" class="btn btn-default btn-success btnWorkDone" disabled="true">
+                            <button type="button" class="btn btn-default btnCharAddToWork" data-id>
+                                <span class="glyphicon glyphicon-plus"></span>업무할당
+                            </button>
+                            <button type="button" class="btn btn-default btn-success btnWorkDone" disabled="true"
+                                    data-id>
                                 작업완료승인
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="projectList" class="col-md-4">
+                <div class="projectCard col-md-12 ">
+                    프로젝트 목록
+                </div>
+
+                <div id="projectCardTemplate">
+                    <div class="projectCard col-md-12" data-id>
+                        <div class="col-md-12">
+                            <p>[<span class="projectName">ProjectName</span>]</p>
+                            <p>예상 업무량 [<span class="projectWorkAmount">workAmount</span>]</p>
+                            <p>수주비용 [$<span class="projectPrice">projectPrice</span>]</p>
+                            <p>예상 매출 [$<span class="projectPrice">projectPrice</span>]</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped active progress-bar-danger"
+                                     role="progressbar"
+                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+                                </div>
+                            </div>
+
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-default btnCharAddToWork" data-id>
+                                <span class="glyphicon glyphicon-plus"></span>수주
+                            </button>
+                            <button type="button" class="btn btn-default btn-success btnWorkDone" disabled="true"
+                                    data-id>
+                                출시
                             </button>
                         </div>
                     </div>
@@ -150,6 +172,7 @@ thanks to : <a href = "http://www.geocities.co.jp/Milano-Cat/3319/">http://www.g
 <script src="js/game.js"></script>
 <script src="js/char.js"></script>
 <script src="js/nameTable.js"></script>
+<script src="js/project.js"></script>
 <script src="js/work.js"></script>
 <script src="js/index.js"></script>
 </body>

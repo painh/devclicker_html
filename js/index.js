@@ -164,6 +164,10 @@ function RefreshGachaBtn(date) {
     }
 }
 
+function EnableWorkDone(id) {
+    $('.workCard[data-id=' + id + ']').find(".btnWorkDone").attr('disabled', false);
+}
+
 var NOTIFY_SUCCESS = 'success';
 // var NOTIFY_INFO = 'info';
 // var NOTIFY_WARNING = 'warning';
@@ -273,6 +277,22 @@ $(document).ready(function () {
         });
 
         Notify('해당 직원을 업무에서 제외했습니다.', NOTIFY_SUCCESS);
+    });
+
+    $(".btnWorkDone").click(function() {
+        var id = $(this).attr('data-id');
+        var workObj = WorkList.GetById(id);
+        Notify(workObj.name + "(을)를 완료 했습니다!", NOTIFY_SUCCESS);
+
+
+        console.log(WorkList.list);
+        CharList.WorkRemoved(id);
+        WorkList.Remove(id);
+        $(".workCard[data-id=" + id + "]").fadeOut(function () {
+            $(this).remove();
+        });
+
+        console.log(WorkList.list);
     });
 
     $(document).on('click', '.btnCharAddToWork', function () {

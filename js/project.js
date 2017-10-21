@@ -1,5 +1,7 @@
-var Work = function (proto) {
-    this.id = ++Work.id;
+var project
+
+var Project = function (proto) {
+    this.id = ++Project.id;
     this.name = proto.name + " #" + this.id;
     this.workAmount = 0;
     this.workAmountMax = proto.workAmount;
@@ -7,17 +9,17 @@ var Work = function (proto) {
     this.tagList = proto.tagList.slice(0);
 };
 
-Work.id = 0;
+Project.id = 0;
 
-Work.prototype.AddChar = function (charObj) {
+Project.prototype.AddChar = function (charObj) {
     AddCharFaceToWork(this.id, charObj);
 };
 
-Work.prototype.WorkDone = function () {
+Project.prototype.WorkDone = function () {
     return (this.workAmount >= this.workAmountMax);
 };
 
-Work.prototype.Work = function (d) {
+Project.prototype.Project = function (d) {
     if (this.WorkDone())
         return;
 
@@ -28,21 +30,21 @@ Work.prototype.Work = function (d) {
 };
 
 
-var WorkList = {
+var ProjectList = {
     list: {}
 };
 
-WorkList.Add = function (newObj) {
-    WorkList.list[newObj.id] = newObj;
+ProjectList.Add = function (newObj) {
+    ProjectList.list[newObj.id] = newObj;
     AddWork(newObj.id, newObj.name, newObj.workAmount, newObj.tagList);
 };
 
-WorkList.GetById = function (id) {
-    return WorkList.list[id];
+ProjectList.GetById = function (id) {
+    return ProjectList.list[id];
 };
 
-WorkList.GenerateRandomWork = function (lv) {
-    WorkList.Add(new Work({
+ProjectList.GenerateRandomWork = function (lv) {
+    ProjectList.Add(new Project({
             name: '일상적인 업무',
             workAmount: lv * 1000 + randomRange(1, lv * 1000),
             tagList: [{name: 'client', lv: 5}]
@@ -50,9 +52,9 @@ WorkList.GenerateRandomWork = function (lv) {
     ));
 };
 
-WorkList.Update = function () {
+ProjectList.Update = function () {
 };
 
-WorkList.Remove = function (id) {
-    delete WorkList.list[id];
+ProjectList.Remove = function (id) {
+    delete ProjectList.list[id];
 };
