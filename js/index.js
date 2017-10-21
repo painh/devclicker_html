@@ -24,6 +24,23 @@ function AddChar(id, name, pay, imgSrc, tagList) {
     RefreshHeights();
 }
 
+function AddProject(id, name, workAmount, orderCost, profit) {
+    var html = $("#projectCardTemplate").clone().html();
+    html = $(html).attr('data-id', id);
+
+    var ele = $("#projectList").append(html).find('.projectCard[data-id=' + id + ']');
+    $(ele).find('.projectName').text(name);
+    $(ele).find('.projectWorkAmount').text(workAmount);
+    $(ele).find('.projectOrderCost').text(orderCost);
+    $(ele).find('.projectProfit').text(profit);
+
+    ele.find('[data-id]').each(function () {
+        $(this).attr('data-id', id);
+    });
+
+    RefreshHeights();
+}
+
 function RemoveChar(id) {
     var ele = $(".charCard[data-id=" + id + "]");
     ele.fadeOut(function () {
@@ -73,7 +90,10 @@ function FloatingText(eleObj, text, option) {
     var offset = eleObj.offset();
     var windowTop = $(window).scrollTop();
     var top = offset.top - windowTop;
-    var left = offset.left + randomRange(0, eleObj.width());
+    var left = offset.left;
+    if (option.randomLeft)
+        left += randomRange(0, eleObj.width());
+
     var style = 'top:' + top + "px; left : " + left + 'px;';
     if (option.bg_color)
         style += 'background-color:' + option.bg_color + ';';
@@ -142,7 +162,7 @@ function randomNoRepeats(array) {
 }
 
 function randomRange(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 
@@ -204,7 +224,7 @@ function AddCharFaceToWork(workId, charObj) {
 
 function ChangeMentalFloatingText(charId, d, now, max) {
     var ele = $(".charCard[data-id=" + charId + "]").find('.progress');
-    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#0f0'};
+    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#0f0', randomLeft : true};
     var percent = (now / max * 100) + '%';
     if (d < 0) {
         option.bg_color = '#f00';
@@ -218,11 +238,19 @@ function ChangeMentalFloatingText(charId, d, now, max) {
 
 function ChangeWorkFloatingText(workId, d, now, max) {
     var ele = $(".workCard[data-id=" + workId + "]").find('.progress');
-    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#00f'};
+    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#00f', randomLeft : true};
     var percent = (now / max * 100) + '%';
 
     ele.find(".progress-bar").attr('style', 'width:' + percent);
     ele.find(".progress-bar").text('업무진행[' + now + '/' + max + ']');
+
+    FloatingText(ele, d, option);
+}
+
+function ChangeGoldFloatingText(gold, d) {
+    var ele = $("#gameGold");
+    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#EEE8AA', randomLeft: false};
+    ele.text('$' + (gold + d));
 
     FloatingText(ele, d, option);
 }
