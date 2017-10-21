@@ -75,14 +75,14 @@ function FloatingText(eleObj, text, option) {
     var obj = $(html).appendTo(eleObj);
 
     var ani = {
-        top: -10,
+        top: option.top || -10,
         opacity: option.opacity || 0
     };
 
     if (option.top == 0)
         delete ani['top'];
 
-    obj.animate(ani , option.delay || 1000, "swing",
+    obj.animate(ani, option.delay || 1000, "swing",
         function () {
             $(this).remove();
         });
@@ -90,7 +90,7 @@ function FloatingText(eleObj, text, option) {
 
 function Quotes(charId, text) {
     $(".charCard[data-id=" + charId + "]").each(function () {
-        FloatingText($(this), text, {top : 0, opacity: 1, delay: 3000, bg_color: '#fff'});
+        FloatingText($(this), text, {top: 0, opacity: 1, delay: 3000, bg_color: '#fff'});
     });
 }
 
@@ -160,8 +160,8 @@ function RefreshGachaBtn(date) {
 }
 
 var NOTIFY_SUCCESS = 'success';
-var NOTIFY_INFO = 'info';
-var NOTIFY_WARNING = 'warning';
+// var NOTIFY_INFO = 'info';
+// var NOTIFY_WARNING = 'warning';
 var NOTIFY_DANGER = 'danger';
 
 function Notify(message, type) {
@@ -190,8 +190,22 @@ function AddCharFaceToWork(workId, charObj) {
         + '"/>');
 }
 
+function ChangeMentalFloatingText(charId, d, now, max) {
+    var ele = $(".charCard[data-id=" + charId + "]").find('.progress');
+    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#0f0'};
+    var percent = (now / max * 100) + '%';
+    if (d < 0) {
+        option.bg_color = '#f00';
+        option.top = ele.offset().top + 20;
+    }
+    ele.find(".progress-bar").attr('style', 'width:' + percent);
+    ele.find(".progress-bar").text('멘탈[' + now + '/' + max + ']');
+
+    FloatingText(ele, d, option);
+}
+
 $(document).ready(function () {
-    $(document).on('click', '.skillTag', function(){
+    $(document).on('click', '.skillTag', function () {
         $("#skillDetail").modal();
     });
 
@@ -226,6 +240,17 @@ $(document).ready(function () {
         }
     });
 
+    $("#charRelease").click(function () {
+        var id = $(this).attr('data-id');
+        var charObj = CharList.GetById(id);
+        if (charObj.CanAllowWork()) {
+            Notify('해당 직원은 놀고 있습니다.', NOTIFY_DANGER);
+            return;
+        }
+        CharList.Release(id);
+        $()
+    });
+
     $(document).on('click', '.btnCharAddToWork', function () {
         var charEle = $('.charCard.charCardSelected');
         if (charEle.length == 0) {
@@ -235,7 +260,7 @@ $(document).ready(function () {
 
         var charObj = CharList.GetById(charEle.attr('data-id'));
         if (!charObj.CanAllowWork()) {
-            Notify('업무를 할당 받을 수 있는 상황이 아닙니다.', NOTIFY_DANGER);
+            Notify('선택된 직원은 업무를 할당 받을 수 있는 상황이 아닙니다.', NOTIFY_DANGER);
             return;
         }
 

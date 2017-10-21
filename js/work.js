@@ -13,16 +13,16 @@ Work.prototype.AddChar = function (charObj) {
 Work.id = 0;
 
 var WorkList = {
-    list: []
+    list: {}
 };
 
 WorkList.Add = function (newObj) {
-    WorkList[newObj.id] = newObj;
+    WorkList.list[newObj.id] = newObj;
     AddWork(newObj.id, newObj.name, newObj.workAmount, newObj.tagList);
 };
 
 WorkList.GetById = function (id) {
-    return WorkList[id];
+    return WorkList.list[id];
 };
 
 WorkList.GenerateRandomWork = function (lv) {
