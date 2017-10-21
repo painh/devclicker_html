@@ -59,10 +59,13 @@ function AddWork(id, name, workAmount, tagList) {
     html = '';
     for (i in tagList) {
         var tag = tagList[i];
+        console.log(tag);
         html += '<div class="skillTag">' + tag.name + '[' + tag.lv + ']</div>';
     }
 
-    ele.find('.skillTagList').html(html);
+    console.log(html);
+
+    ele.find('.workSkillList').html(html);
 }
 
 function FloatingText(eleObj, text) {
@@ -170,10 +173,8 @@ function RefreshCharCard(charObj) {
 
 function AddCharFaceToWork(workId, charObj) {
     var workEle = $(".workCard[data-id=" + workId + "]");
-    console.log(workEle, workEle.find(".workCharList"));
     workEle.find(".workCharList").prepend('<img class="btnCharDetail charFace img-rounded"  data-id='+charObj.id+' src="'+charObj.imgSrc
         +'"/>');
-    console.log('done');
 }
 
 $(document).ready(function () {

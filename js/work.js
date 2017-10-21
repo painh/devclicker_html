@@ -3,14 +3,7 @@ var Work = function (proto) {
     this.name = proto.name + " #" + this.id;
     this.workAmount = proto.workAmount;
 
-    this.tagList = [];
-    for (var i = 0; i < proto.tagList; ++i) {
-        var name = randomPick(skillTagList);
-        if (this.tagList.hasOwnProperty(name))
-            this.tagList[name].lv++;
-        else
-            this.tagList[name] = {name: name, lv: 1};
-    }
+    this.tagList = proto.tagList.slice(0);
 };
 
 Work.prototype.AddChar = function (charObj) {
