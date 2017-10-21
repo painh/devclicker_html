@@ -1,5 +1,6 @@
 body {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: steelblue;
 }
 
 p {
@@ -8,7 +9,9 @@ p {
 a {
     color: #00B7FF;
 }
-
+.container{
+    background-color: steelblue;
+}
 #charCardTemplate {
     display : none;
 }
@@ -25,7 +28,7 @@ a {
 }
 
 #charList {
-    background-color: #b7ff76;
+    background-color: lightgray;
     padding-top: 5px;
     padding-right: 5px;
     padding-bottom: 5px;
@@ -33,7 +36,7 @@ a {
 }
 
 #workList {
-    background-color: lightskyblue;
+    background-color: lightgray;
     padding-top: 5px;
     padding-right: 5px;
     padding-bottom: 5px;
@@ -44,8 +47,8 @@ a {
     border-style: solid;
     border-width: 1px;
     border-color: #000;
-    border-radius: 1px;
-    background: #fff;
+    border-radius: 5px;
+    background: white;
     padding-top: 5px;
     padding-right: 5px;
     padding-bottom: 5px;
@@ -81,8 +84,8 @@ a {
     border-style: solid;
     border-width: 1px;
     border-color: #000;
-    border-radius: 1px;
-    background: #ff6e39;
+    border-radius: 5px;
+    background: white;
     padding-top: 5px;
     padding-right: 5px;
     padding-bottom: 5px;

@@ -1,3 +1,5 @@
+var skillTagList = ['client', 'server', 'illust', 'qa', 'scenario', '3d'];
+
 function AddChar(id, name, pay, imgSrc, tagList) {
     var html = $("#charCardTemplate").clone().html();
     html = $(html).attr('data-id', id);
@@ -21,18 +23,47 @@ function AddChar(id, name, pay, imgSrc, tagList) {
     ele.find('.skillTagList').html(html);
 }
 
+function RemoveChar(id) {
+    var ele = $(".charCard[data-id=" + id + "]");
+    ele.fadeOut(function () {
+        $(this).remove();
+    });
+}
+
 function ShowCharDetail(parentEle, id) {
-    console.log(id);
     var char = CharList.GetById(id);
     FloatingText(parentEle, 'hello world!');
 
     $("#charDetail").find('#charName').text(char.name);
+
+    $("#charDetail").find('[data-id]').each(function () {
+        $(this).attr('data-id', id);
+    });
+
     $("#charDetail").modal();
 }
 
-function AddWork() {
-    var html = $("#workCardTemplate").html();
-    $("#workList").append(html);
+function AddWork(id, name, workAmount, tagList) {
+
+    var html = $("#workCardTemplate").clone().html();
+    html = $(html).attr('data-id', id);
+
+    var ele = $("#workList").append(html).find('.workCard[data-id=' + id + ']');
+    $(ele).find('.workName').text(name);
+    $(ele).find('.workAmount').text(workAmount);
+
+    ele.find('[data-id]').each(function () {
+        $(this).attr('data-id', id);
+    });
+
+    var i;
+    html = '';
+    for (i in tagList) {
+        var tag = tagList[i];
+        html += '<div class="skillTag">' + tag.name + '[' + tag.lv + ']</div>';
+    }
+
+    ele.find('.skillTagList').html(html);
 }
 
 function FloatingText(eleObj, text) {
@@ -88,10 +119,29 @@ function randomNoRepeats(array) {
     };
 }
 
-function randomPick(a)
-{
+function randomRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+function randomPick(a) {
     var index = Math.floor(Math.random() * a.length);
     return a[index];
+}
+
+function RefreshGachaBtn(date) {
+    var now = new Date();
+    var left = GACHA_TIMER_MAX - (now - date);
+    $('#btnGacha').prop('disabled', false);
+    if (left < 0) {
+        $("#btnGacha").text('가챠');
+        $('#btnGacha').prop('disabled', false);
+    }
+    else {
+        var date = new Date(left);
+        $("#btnGacha").text('가챠 [' + (date.getMinutes() + 1) + '분 남음]');
+//        $('#btnGacha').prop('disabled', true);
+    }
 }
 
 var NOTIFY_SUCCESS = 'success';
@@ -129,5 +179,14 @@ $(document).ready(function () {
             Game.Gacha();
         }
     );
+
+    $("#charFire").click(function () {
+        var r = confirm('정말로 해고할까요?');
+        if (r == true) {
+            var id = $(this).attr('data-id');
+            CharList.Fire(id);
+            $('#charDetail').modal('hide');
+        }
+    });
 
 });

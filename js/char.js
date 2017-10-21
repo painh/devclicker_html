@@ -1,5 +1,3 @@
-var skillTagList = ['client', 'server', 'illust', 'qa', 'Scenario', '3d'];
-
 var Char = function (proto, skillTagCnt) {
     this.id = Char.id++;
     this.name = proto.name;
@@ -38,4 +36,15 @@ CharList.Add = function (newCharObj) {
 
 CharList.GetById = function (id) {
     return CharList[id];
+};
+
+CharList.Fire = function (id) {
+    console.log(charList);
+    delete CharList.list[id];
+    console.log(charList);
+    RemoveChar(id);
+};
+
+CharList.Msg = function (id, text) {
+
 };
