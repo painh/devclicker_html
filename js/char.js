@@ -5,6 +5,7 @@ var Char = function (proto, skillTagCnt) {
     this.mentalMax = proto.mentalMax;
     this.imgSrc = 'assets/mon/mon_' + FormatNumberLength(proto.imgNumber, 3) + '.png';
     this.tagList = [];
+    this.allowedWorkId = -1;
 
     for (var i = 0; i < skillTagCnt; ++i) {
         var name = randomPick(skillTagList);
@@ -23,6 +24,17 @@ Char.prototype.GetPay = function () {
 
 Char.prototype.GetImg = function () {
     return this.imgSrc;
+};
+
+Char.prototype.CanAllowWork = function () {
+    if (this.allowedWorkId == -1)
+        return true;
+
+    return false;
+};
+
+Char.prototype.AllowWork = function (id) {
+    this.allowedWorkId = id;
 };
 
 var CharList = {
@@ -47,4 +59,12 @@ CharList.Fire = function (id) {
 
 CharList.Msg = function (id, text) {
 
+};
+
+CharList.Update = function () {
+    var i;
+    for (i in CharList.list) {
+        var char = CharList[i];
+        RefreshCharCard(char);
+    }
 };

@@ -20,6 +20,9 @@ Game.Update = function () {
 //    console.log(Game.prevTimer.getTime(), now.getTime(), now.getTime() - Game.prevTimer.getTime());
     Game.prevTimer = now;
     RefreshGachaBtn(Game.GachaTimer);
+
+    CharList.Update();
+    WorkList.Update();
 };
 
 

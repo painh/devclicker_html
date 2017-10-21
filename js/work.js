@@ -1,6 +1,6 @@
 var Work = function (proto) {
-    this.id = Work.id++;
-    this.name = proto.name;
+    this.id = ++Work.id;
+    this.name = proto.name + " #" + this.id;
     this.workAmount = proto.workAmount;
 
     this.tagList = [];
@@ -11,6 +11,10 @@ var Work = function (proto) {
         else
             this.tagList[name] = {name: name, lv: 1};
     }
+};
+
+Work.prototype.AddChar = function (charObj) {
+    AddCharFaceToWork(this.id, charObj);
 };
 
 Work.id = 0;
@@ -35,4 +39,7 @@ WorkList.GenerateRandomWork = function (lv) {
             tagList: [{name: 'client', lv: 5}]
         }
     ));
+};
+
+WorkList.Update = function () {
 };

@@ -44,7 +44,6 @@ function ShowCharDetail(parentEle, id) {
 }
 
 function AddWork(id, name, workAmount, tagList) {
-
     var html = $("#workCardTemplate").clone().html();
     html = $(html).attr('data-id', id);
 
@@ -159,6 +158,24 @@ function Notify(message, type) {
     });
 }
 
+function RefreshCharCard(charObj) {
+    var ele = $(".charCard[data-id=" + charObj.id + "]");
+    if (charObj.allowedWorkId == -1)
+        ele.find(".charAllowedWork").text('업무 미할당');
+    else {
+        var workObj = WorkList.GetById(charObj.allowedWorkId);
+        ele.find(".charAllowedWork").text(workObj.name);
+    }
+}
+
+function AddCharFaceToWork(workId, charObj) {
+    var workEle = $(".workCard[data-id=" + workId + "]");
+    console.log(workEle, workEle.find(".workCharList"));
+    workEle.find(".workCharList").prepend('<img class="btnCharDetail charFace img-rounded"  data-id='+charObj.id+' src="'+charObj.imgSrc
+        +'"/>');
+    console.log('done');
+}
+
 $(document).ready(function () {
     $(document).on('click', '.btnCharDetail', function () {
         ShowCharDetail(this, $(this).attr('data-id'));
@@ -173,7 +190,7 @@ $(document).ready(function () {
 
     setInterval(function () {
         Game.Update()
-    }, 1000 / 30);
+    }, 1000);
 
     $("#btnGacha").click(function () {
             Game.Gacha();
@@ -190,12 +207,25 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.btnCharAddToWork', function () {
-        var char = $('.charCard.charCardSelected');
-        if (char.length == 0) {
+        var charEle = $('.charCard.charCardSelected');
+        if (charEle.length == 0) {
             Notify('직원을 먼저 선택해주세요', NOTIFY_DANGER);
             return;
         }
 
+        var charObj = CharList.GetById(charEle.attr('data-id'));
+        if (!charObj.CanAllowWork()) {
+            Notify('업무를 할당 받을 수 있는 상황이 아닙니다.', NOTIFY_DANGER);
+            return;
+        }
+
+        var workId = $(this).attr('data-id');
+        charObj.AllowWork(workId);
+
+        var workObj = WorkList.GetById(workId);
+        workObj.AddChar(charObj);
+
+        RefreshCharCard(charObj);
     });
 
 });
