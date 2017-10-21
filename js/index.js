@@ -191,6 +191,10 @@ function AddCharFaceToWork(workId, charObj) {
 }
 
 $(document).ready(function () {
+    $(document).on('click', '.skillTag', function(){
+        $("#skillDetail").modal();
+    });
+
     $(document).on('click', '.btnCharDetail', function () {
         ShowCharDetail(this, $(this).attr('data-id'));
     });

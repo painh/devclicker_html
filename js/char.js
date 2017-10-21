@@ -38,11 +38,11 @@ Char.prototype.AllowWork = function (id) {
 };
 
 var CharList = {
-    list: []
+    list: {}
 };
 
 CharList.Add = function (newCharObj) {
-    CharList[newCharObj.id] = newCharObj;
+    CharList.list[newCharObj.id] = newCharObj;
     AddChar(newCharObj.id, newCharObj.name, newCharObj.GetPay(), newCharObj.GetImg(), newCharObj.tagList);
 };
 
@@ -57,16 +57,17 @@ CharList.GenerateRandomChar = function (lv) {
     }, skillCnt);
     CharList.Add(obj);
 
-}
+    return obj;
+};
 
 CharList.GetById = function (id) {
-    return CharList[id];
+    return CharList.list[id];
 };
 
 CharList.Fire = function (id) {
-    console.log(charList);
+    console.log(CharList.list);
     delete CharList.list[id];
-    console.log(charList);
+    console.log(CharList.list);
     RemoveChar(id);
 };
 
@@ -77,7 +78,7 @@ CharList.Msg = function (id, text) {
 CharList.Update = function () {
     var i;
     for (i in CharList.list) {
-        var char = CharList[i];
+        var char = CharList.list[i];
         RefreshCharCard(char);
     }
 };
