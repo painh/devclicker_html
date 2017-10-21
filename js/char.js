@@ -30,10 +30,18 @@ Char.prototype.Update = function () {
         return;
     }
 
-    var workObj = WorkList.GetById(this.allowedWorkId);
-    var i,j;
-    for(i in workObj.tagList)
+    this.ChangeMental(-1);
+    var workPower = 10;
 
+    var workObj = WorkList.GetById(this.allowedWorkId);
+    var i, j;
+    for (i in workObj.tagList) {
+        var workTag = workObj.tagList[i];
+        for (j in this.tagList) {
+            var charTag = this.tagList[j];
+//            console.log(workTag, charTag);
+        }
+    }
 
     RefreshCharCard(this);
 
