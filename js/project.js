@@ -1,8 +1,8 @@
 var projectList = [
     {
         name: '동인 게임 개발',
-        timeMin: 1000,
-        timeMax: 2000,
+        timeMin: 1000 * 60 * 2,
+        timeMax: 1000 * 60 * 5,
         orderCostMin: 100,
         orderCostMax: 200,
         profitMin: 150,
@@ -31,17 +31,43 @@ var Project = function (proto) {
     this.orderCost = proto.orderCost;
     this.profit = proto.profit;
 
+    this.time = proto.time;
+    this.createAt = new Date();
+
     this.workAmount = 0;
     this.workAmountMax = 0;
     this.workList = proto.workList.slice(0);
 
     var i;
-    for(i in proto.workList)
+    for (i in proto.workList)
         this.workAmountMax += proto.workList[i].workAmount;
 };
 
 Project.id = 0;
 
+Project.prototype.Update = function () {
+    var now = new Date();
+    var max = new Date(this.time + this.createAt.getTime());
+    var percent = (max.getTime() - now.getTime()) / this.time * 100;
+
+    var leftDate = new Date(max.getTime() - now.getTime());
+    var leftStr = '';
+
+    if (leftDate.getTime() / 1000 > 60)
+        leftStr = leftDate.getMinutes() + '분 남음';
+    else
+        leftStr = leftDate.getSeconds() + '초 남음';
+
+
+    RefreshProjectCard(this, Math.round(percent), leftStr);
+
+    if (percent <= 0)
+        this.isDead = true;
+};
+
+Project.prototype.ProcessWorkAmount = function(amount) {
+    this.workAmount += amount;
+};
 
 var ProjectList = {
     list: {}
@@ -49,12 +75,12 @@ var ProjectList = {
 
 ProjectList.ProtoToSeed = function (protoId) {
     var proto = projectList[protoId];
-    var workList = [], tagList = [];
+    var workList = [];
     var tag;
     var i, j;
     for (i in proto.workList) {
         var work = proto.workList[i];
-        tagList = [];
+        var tagList = [];
         for (j in work.tagList) {
             tag = work.tagList[j];
             tagList.push({name: work.name, lv: randomRange(tag.minLv, tag.maxLv)});
@@ -91,9 +117,36 @@ ProjectList.GenerateRandomProject = function () {
     ProjectList.Add(new Project(seed));
 };
 
-ProjectList.Update = function () {
+ProjectList.Update = function (dt) {
+    var i;
+    var deadList = {};
+    var cnt = 0;
+
+    for (i in ProjectList.list) {
+        var project = ProjectList.list[i];
+        project.Update(dt);
+        if (project.isDead)
+            deadList[project.id] = project;
+
+        cnt++;
+    }
+
+    for (i in deadList) {
+        var project = deadList[i];
+        Notify(project.name + '(은)는 시간이 지나 만료되었습니다.', NOTIFY_DANGER);
+        RemoveProject(project.id);
+        delete ProjectList.list[i];
+    }
+
+    if (cnt < 5)
+        ProjectList.GenerateRandomProject();
 };
 
 ProjectList.Remove = function (id) {
     delete ProjectList.list[id];
+};
+
+ProjectList.WorkDone = function (workObj) {
+    var projectObj = ProjectList.GetById(workObj.parentProjectId);
+    projectObj.ProcessWorkAmount(workObj.workAmount);
 };

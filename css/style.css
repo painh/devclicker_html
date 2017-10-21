@@ -62,6 +62,7 @@ a {
     padding-bottom: 5px;
     padding-left: 5px;
     height: 100%;
+    overflow-y: auto;
 }
 
 #projectList {
@@ -71,6 +72,7 @@ a {
     padding-bottom: 5px;
     padding-left: 5px;
     height: 100%;
+    overflow-y: auto;
 }
 
 .charCard {

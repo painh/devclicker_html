@@ -48,10 +48,15 @@ function RemoveChar(id) {
     });
 }
 
+function RemoveProject(id) {
+    var ele = $(".projectCard[data-id=" + id + "]");
+    ele.fadeOut(function () {
+        $(this).remove();
+    });
+}
+
 function ShowCharDetail(parentEle, id) {
     var char = CharList.GetById(id);
-    FloatingText(parentEle, 'hello world!');
-
     $("#charDetail").find('#charName').text(char.name);
 
     $("#charDetail").find('[data-id]').each(function () {
@@ -216,6 +221,17 @@ function RefreshCharCard(charObj) {
     }
 }
 
+
+function RefreshProjectCard(projectObj, timePercent, leftDate) {
+    var ele = $(".projectCard[data-id=" + projectObj.id + "]").find('.progress');
+    ele.find(".progress-bar.leftTime").attr('style', 'width:' + timePercent + '%');
+    ele.find(".progress-bar.leftTime").text('종료까지 : ' + leftDate);
+
+    var percent = (projectObj.workAmount / projectObj.workAmountMax) * 100;
+    ele.find(".progress-bar.workAmount").attr('style', 'width:' + percent + '%');
+    ele.find(".progress-bar.workAmount").text('업무량[' + projectObj.workAmount +"/"+ projectObj.workAmountMax + ']' );
+}
+
 function AddCharFaceToWork(workId, charObj) {
     var workEle = $(".workCard[data-id=" + workId + "]");
     workEle.find(".workCharList").prepend('<img class="btnCharDetail charFace img-rounded"  data-id=' + charObj.id + ' src="' + charObj.imgSrc
@@ -224,7 +240,7 @@ function AddCharFaceToWork(workId, charObj) {
 
 function ChangeMentalFloatingText(charId, d, now, max) {
     var ele = $(".charCard[data-id=" + charId + "]").find('.progress');
-    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#0f0', randomLeft : true};
+    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#0f0', randomLeft: true};
     var percent = (now / max * 100) + '%';
     if (d < 0) {
         option.bg_color = '#f00';
@@ -238,7 +254,7 @@ function ChangeMentalFloatingText(charId, d, now, max) {
 
 function ChangeWorkFloatingText(workId, d, now, max) {
     var ele = $(".workCard[data-id=" + workId + "]").find('.progress');
-    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#00f', randomLeft : true};
+    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#00f', randomLeft: true};
     var percent = (now / max * 100) + '%';
 
     ele.find(".progress-bar").attr('style', 'width:' + percent);
@@ -321,20 +337,19 @@ $(document).ready(function () {
         Notify('해당 직원을 업무에서 제외했습니다.', NOTIFY_SUCCESS);
     });
 
-    $(".btnWorkDone").click(function () {
+    $(document).on('click', ".btnWorkDone", function () {
         var id = $(this).attr('data-id');
         var workObj = WorkList.GetById(id);
+        ProjectList.WorkDone(workObj);
+
         Notify(workObj.name + "(을)를 완료 했습니다!", NOTIFY_SUCCESS);
 
-
-        console.log(WorkList.list);
         CharList.WorkRemoved(id);
         WorkList.Remove(id);
         $(".workCard[data-id=" + id + "]").fadeOut(function () {
             $(this).remove();
         });
 
-        console.log(WorkList.list);
     });
 
     $(document).on('click', '.btnCharAddToWork', function () {
@@ -357,6 +372,20 @@ $(document).ready(function () {
         workObj.AddChar(charObj);
 
         RefreshCharCard(charObj);
+    });
+
+    $(document).on('click', '.btnOrderProject', function () {
+        var projectObj = ProjectList.GetById($(this).attr('data-id'));
+
+        if (Game.GetGold() < projectObj.orderCost) {
+            Notify('수주 비용보다 소지금이 적으면 프로젝트를 수주할 수 없습니다.', NOTIFY_DANGER);
+            return;
+        }
+        Game.ChangeGold(-projectObj.orderCost);
+        WorkList.ProjectStart(projectObj);
+
+        $(this).attr('disabled', true);
+
     });
 
     $(window).resize(function () {

@@ -3,6 +3,7 @@ var Work = function (proto) {
     this.name = proto.name + " #" + this.id;
     this.workAmount = 0;
     this.workAmountMax = proto.workAmount;
+    this.parentProjectId = proto.parentProjectId;
 
     this.tagList = proto.tagList.slice(0);
 };
@@ -13,12 +14,12 @@ Work.prototype.AddChar = function (charObj) {
     AddCharFaceToWork(this.id, charObj);
 };
 
-Work.prototype.WorkDone = function () {
+Work.prototype.HaveWorkDone = function () {
     return (this.workAmount >= this.workAmountMax);
 };
 
 Work.prototype.Work = function (d) {
-    if (this.WorkDone())
+    if (this.HaveWorkDone())
         return;
 
     this.workAmount = Math.min(this.workAmount + d, this.workAmountMax);
@@ -26,7 +27,6 @@ Work.prototype.Work = function (d) {
     if (this.workAmount >= this.workAmountMax)
         EnableWorkDone(this.id);
 };
-
 
 var WorkList = {
     list: {}
@@ -55,4 +55,17 @@ WorkList.Update = function () {
 
 WorkList.Remove = function (id) {
     delete WorkList.list[id];
+};
+
+WorkList.ProjectStart = function (projectObj) {
+    var i;
+    for (i in projectObj.workList) {
+        var work = projectObj.workList[i];
+        WorkList.Add(new Work({
+            name: work.name,
+            parentProjectId: projectObj.id,
+            workAmount: work.workAmount,
+            tagList: work.tagList
+        }));
+    }
 };

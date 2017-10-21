@@ -19,7 +19,7 @@ var Char = function (proto, skillTagCnt) {
         else
             this.tagList[name] = {name: name, lv: 1};
     }
-    this.tagList['client'] = {name: 'client', lv: randomRange(1, 10)};
+    //this.tagList['client'] = {name: 'client', lv: randomRange(1, 10)};
 };
 
 Char.id = 0;
@@ -42,7 +42,7 @@ Char.prototype.Update = function (dt) {
 
     var workPower = this.workPower;
     var workObj = WorkList.GetById(this.allowedWorkId);
-    if (workObj.WorkDone())
+    if (workObj.HaveWorkDone())
         return;
 
     workObj.Work(workPower);
