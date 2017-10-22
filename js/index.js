@@ -56,7 +56,7 @@ function RemoveProject(id) {
 }
 
 function ShowCharDetail(parentEle, id) {
-    var char = CharList.GetById(id);
+    var char = CharManager.GetById(id);
     $("#charDetail").find('#charName').text(char.name);
 
     $("#charDetail").find('[data-id]').each(function () {
@@ -182,12 +182,12 @@ function RefreshGachaBtn(date) {
     var left = GACHA_TIMER_MAX - (now - date);
     $('#btnGacha').prop('disabled', false);
     if (left < 0) {
-        $("#btnGacha").text('가챠');
+        $("#btnGacha").text('직원 가챠');
         $('#btnGacha').prop('disabled', false);
     }
     else {
         var date = new Date(left);
-        $("#btnGacha").text('가챠 [' + (date.getMinutes() + 1) + '분 남음]');
+        $("#btnGacha").text('직원 가챠 [' + (date.getMinutes() + 1) + '분 남음]');
 //        $('#btnGacha').prop('disabled', true);
     }
 }
@@ -217,7 +217,7 @@ function RefreshCharCard(charObj) {
     if (charObj.allowedWorkId == -1)
         ele.find(".charAllowedWork").text('업무 미할당');
     else {
-        var workObj = WorkList.GetById(charObj.allowedWorkId);
+        var workObj = WorkManager.GetById(charObj.allowedWorkId);
         ele.find(".charAllowedWork").text(workObj.name);
     }
 }
@@ -316,20 +316,20 @@ $(document).ready(function () {
         var r = confirm('정말로 해고할까요?');
         if (r == true) {
             var id = $(this).attr('data-id');
-            CharList.Fire(id);
+            CharManager.Fire(id);
             $('#charDetail').modal('hide');
         }
     });
 
     $("#charRelease").click(function () {
         var id = $(this).attr('data-id');
-        var charObj = CharList.GetById(id);
+        var charObj = CharManager.GetById(id);
         if (charObj.CanAllowWork()) {
             Notify('해당 직원은 놀고 있습니다.', NOTIFY_DANGER);
             return;
         }
         var workId = charObj.allowedWorkId;
-        CharList.Release(id);
+        CharManager.Release(id);
 
         $(".workCard[data-id=" + workId + "]").find(".charFace").fadeOut(function () {
             $(this).remove();
@@ -340,13 +340,13 @@ $(document).ready(function () {
 
     $(document).on('click', ".btnWorkDone", function () {
         var id = $(this).attr('data-id');
-        var workObj = WorkList.GetById(id);
-        ProjectList.WorkDone(workObj);
+        var workObj = WorkManager.GetById(id);
+        ProjectManager.WorkDone(workObj);
 
         Notify(workObj.name + "(을)를 완료 했습니다!", NOTIFY_SUCCESS);
 
-        CharList.WorkRemoved(id);
-        WorkList.Remove(id);
+        CharManager.WorkRemoved(id);
+        WorkManager.Remove(id);
         $(".workCard[data-id=" + id + "]").fadeOut(function () {
             $(this).remove();
         });
@@ -360,7 +360,7 @@ $(document).ready(function () {
             return;
         }
 
-        var charObj = CharList.GetById(charEle.attr('data-id'));
+        var charObj = CharManager.GetById(charEle.attr('data-id'));
         if (!charObj.CanAllowWork()) {
             Notify('선택된 직원은 업무를 할당 받을 수 있는 상황이 아닙니다.', NOTIFY_DANGER);
             return;
@@ -369,21 +369,21 @@ $(document).ready(function () {
         var workId = $(this).attr('data-id');
         charObj.AllowWork(workId);
 
-        var workObj = WorkList.GetById(workId);
+        var workObj = WorkManager.GetById(workId);
         workObj.AddChar(charObj);
 
         RefreshCharCard(charObj);
     });
 
     $(document).on('click', '.btnOrderProject', function () {
-        var projectObj = ProjectList.GetById($(this).attr('data-id'));
+        var projectObj = ProjectManager.GetById($(this).attr('data-id'));
 
         if (Game.GetGold() < projectObj.orderCost) {
             Notify('수주 비용보다 소지금이 적으면 프로젝트를 수주할 수 없습니다.', NOTIFY_DANGER);
             return;
         }
         Game.ChangeGold(-projectObj.orderCost);
-        WorkList.ProjectStart(projectObj);
+        WorkManager.ProjectStart(projectObj);
 
         $(this).attr('disabled', true);
 

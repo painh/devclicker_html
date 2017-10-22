@@ -69,11 +69,11 @@ Project.prototype.ProcessWorkAmount = function(amount) {
     this.workAmount += amount;
 };
 
-var ProjectList = {
+var ProjectManager = {
     list: {}
 };
 
-ProjectList.ProtoToSeed = function (protoId) {
+ProjectManager.ProtoToSeed = function (protoId) {
     var proto = projectList[protoId];
     var workList = [];
     var tag;
@@ -102,28 +102,28 @@ ProjectList.ProtoToSeed = function (protoId) {
     };
 };
 
-ProjectList.Add = function (newObj) {
-    ProjectList.list[newObj.id] = newObj;
+ProjectManager.Add = function (newObj) {
+    ProjectManager.list[newObj.id] = newObj;
     AddProject(newObj.id, newObj.name, newObj.workAmountMax, newObj.orderCost, newObj.profit);
 };
 
-ProjectList.GetById = function (id) {
-    return ProjectList.list[id];
+ProjectManager.GetById = function (id) {
+    return ProjectManager.list[id];
 };
 
-ProjectList.GenerateRandomProject = function () {
-    var seed = ProjectList.ProtoToSeed(randomRange(0, projectList.length));
+ProjectManager.GenerateRandomProject = function () {
+    var seed = ProjectManager.ProtoToSeed(randomRange(0, projectList.length));
 
-    ProjectList.Add(new Project(seed));
+    ProjectManager.Add(new Project(seed));
 };
 
-ProjectList.Update = function (dt) {
+ProjectManager.Update = function (dt) {
     var i;
     var deadList = {};
     var cnt = 0;
 
-    for (i in ProjectList.list) {
-        var project = ProjectList.list[i];
+    for (i in ProjectManager.list) {
+        var project = ProjectManager.list[i];
         project.Update(dt);
         if (project.isDead)
             deadList[project.id] = project;
@@ -135,18 +135,18 @@ ProjectList.Update = function (dt) {
         var project = deadList[i];
         Notify(project.name + '(은)는 시간이 지나 만료되었습니다.', NOTIFY_DANGER);
         RemoveProject(project.id);
-        delete ProjectList.list[i];
+        delete ProjectManager.list[i];
     }
 
     if (cnt < 5)
-        ProjectList.GenerateRandomProject();
+        ProjectManager.GenerateRandomProject();
 };
 
-ProjectList.Remove = function (id) {
-    delete ProjectList.list[id];
+ProjectManager.Remove = function (id) {
+    delete ProjectManager.list[id];
 };
 
-ProjectList.WorkDone = function (workObj) {
-    var projectObj = ProjectList.GetById(workObj.parentProjectId);
+ProjectManager.WorkDone = function (workObj) {
+    var projectObj = ProjectManager.GetById(workObj.parentProjectId);
     projectObj.ProcessWorkAmount(workObj.workAmount);
 };

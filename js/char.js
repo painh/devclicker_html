@@ -41,7 +41,7 @@ Char.prototype.Update = function (dt) {
     }
 
     var workPower = this.workPower;
-    var workObj = WorkList.GetById(this.allowedWorkId);
+    var workObj = WorkManager.GetById(this.allowedWorkId);
     if (workObj.HaveWorkDone())
         return;
 
@@ -81,18 +81,18 @@ Char.prototype.AllowWork = function (id) {
     this.allowedWorkId = id;
 };
 
-var CharList = {
+var CharManager = {
     list: {}
 };
 
-CharList.Add = function (newCharObj) {
-    CharList.list[newCharObj.id] = newCharObj;
+CharManager.Add = function (newCharObj) {
+    CharManager.list[newCharObj.id] = newCharObj;
     AddChar(newCharObj.id, newCharObj.name, newCharObj.GetPay(), newCharObj.GetImg(), newCharObj.tagList);
     ChangeMentalFloatingText(newCharObj.id, 0, newCharObj.mental, newCharObj.mentalMax);
 
 };
 
-CharList.GenerateRandomChar = function (lv) {
+CharManager.GenerateRandomChar = function (lv) {
     var skillCnt = lv;
 
     var name = g_nameTable[Math.floor(Math.random() * g_nameTable.length)];
@@ -103,30 +103,30 @@ CharList.GenerateRandomChar = function (lv) {
         imgNumber: randomRange(1, 90),
         workPower: randomRange(8, 12)
     }, skillCnt);
-    CharList.Add(obj);
+    CharManager.Add(obj);
 
     return obj;
 };
 
-CharList.GetById = function (id) {
-    return CharList.list[id];
+CharManager.GetById = function (id) {
+    return CharManager.list[id];
 };
 
-CharList.Fire = function (id) {
-    delete CharList.list[id];
+CharManager.Fire = function (id) {
+    delete CharManager.list[id];
     RemoveChar(id);
 };
 
-CharList.Msg = function (id, text) {
+CharManager.Msg = function (id, text) {
 
 };
 
-CharList.Update = function (dt) {
+CharManager.Update = function (dt) {
     var i;
     var deadList = {};
 
-    for (i in CharList.list) {
-        var char = CharList.list[i];
+    for (i in CharManager.list) {
+        var char = CharManager.list[i];
         char.Update(dt);
         if (char.isDead)
             deadList[char.id] = char;
@@ -136,22 +136,22 @@ CharList.Update = function (dt) {
         var char = deadList[i];
         Notify(char.name + '(은)는 멘탈이 터져서 퇴사했습니다.', NOTIFY_DANGER);
         RemoveChar(char.id);
-        delete CharList.list[i];
+        delete CharManager.list[i];
     }
 };
 
-CharList.Release = function (id) {
-    var charObj = CharList.GetById(id);
+CharManager.Release = function (id) {
+    var charObj = CharManager.GetById(id);
     charObj.allowedWorkId = -1;
     RefreshCharCard(charObj);
 };
 
-CharList.WorkRemoved = function (id) {
+CharManager.WorkRemoved = function (id) {
     var i;
-    for (i in CharList.list) {
-        var charObj = CharList.list[i];
+    for (i in CharManager.list) {
+        var charObj = CharManager.list[i];
         if (charObj.allowedWorkId == id) {
-            CharList.Release(charObj.id);
+            CharManager.Release(charObj.id);
         }
     }
 };

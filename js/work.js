@@ -28,21 +28,21 @@ Work.prototype.Work = function (d) {
         EnableWorkDone(this.id);
 };
 
-var WorkList = {
+var WorkManager = {
     list: {}
 };
 
-WorkList.Add = function (newObj) {
-    WorkList.list[newObj.id] = newObj;
+WorkManager.Add = function (newObj) {
+    WorkManager.list[newObj.id] = newObj;
     AddWork(newObj.id, newObj.name, newObj.workAmount, newObj.tagList);
 };
 
-WorkList.GetById = function (id) {
-    return WorkList.list[id];
+WorkManager.GetById = function (id) {
+    return WorkManager.list[id];
 };
 
-WorkList.GenerateRandomWork = function (lv) {
-    WorkList.Add(new Work({
+WorkManager.GenerateRandomWork = function (lv) {
+    WorkManager.Add(new Work({
             name: '일상적인 업무',
             workAmount: lv * 1000 + randomRange(1, lv * 1000),
             tagList: [{name: 'client', lv: 5}]
@@ -50,18 +50,18 @@ WorkList.GenerateRandomWork = function (lv) {
     ));
 };
 
-WorkList.Update = function () {
+WorkManager.Update = function () {
 };
 
-WorkList.Remove = function (id) {
-    delete WorkList.list[id];
+WorkManager.Remove = function (id) {
+    delete WorkManager.list[id];
 };
 
-WorkList.ProjectStart = function (projectObj) {
+WorkManager.ProjectStart = function (projectObj) {
     var i;
     for (i in projectObj.workList) {
         var work = projectObj.workList[i];
-        WorkList.Add(new Work({
+        WorkManager.Add(new Work({
             name: work.name,
             parentProjectId: projectObj.id,
             workAmount: work.workAmount,
