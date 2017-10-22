@@ -220,7 +220,7 @@ function RefreshGachaBtn(date) {
     }
     else {
         var date = new Date(left);
-        $("#btnGacha").text('직원 가챠 [' + (date.getMinutes() + 1) + '분 남음]');
+        $("#btnGacha").text('직원 가챠 [' + (date.getMinutes()) + '분 남음]');
         $('#btnGacha').prop('disabled', true);
     }
 }
