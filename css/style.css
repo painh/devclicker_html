@@ -175,6 +175,10 @@ a {
 }
 
 
+.charCardWorking {
+    background-color: #ffaeae;
+}
+
 .workCardDone {
     background-color: orange;
 }

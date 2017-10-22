@@ -1,12 +1,14 @@
 var projectList = [
     {
         name: '국가 산업 수주',
-        timeMin: 1000 * 60 * 2,
-        timeMax: 1000 * 60 * 5,
+        // timeMin: 1000 * 60 * 2,
+        // timeMax: 1000 * 60 * 5,
+        timeMin: 1000  * 20 ,
+        timeMax: 1000  * 20,
         orderCostMin: 0,
         orderCostMax: 0,
-        profitMin: 30,
-        profitMax: 50,
+        profitMin: 60,
+        profitMax: 100,
         workList: [
             {
                 name: '공문서 작성',
@@ -53,8 +55,8 @@ var projectList = [
         timeMax: 1000 * 60 * 5,
         orderCostMin: 0,
         orderCostMax: 0,
-        profitMin: 30,
-        profitMax: 50,
+        profitMin: 60,
+        profitMax: 100,
         workList: [
             {
                 name: '개발 환경 설정',
@@ -94,8 +96,8 @@ var projectList = [
         timeMax: 1000 * 60 * 5,
         orderCostMin: 10,
         orderCostMax: 20,
-        profitMin: 30,
-        profitMax: 50,
+        profitMin: 60,
+        profitMax: 100,
         workList: [
             {
                 name: '원작 읽기',
@@ -131,7 +133,7 @@ var projectList = [
                 name: '행사장 업무 처리',
                 workAmountMin: 300,
                 workAmountMax: 500,
-                tagList: [{}],
+                tagList: [],
             }
         ]
     },
@@ -275,6 +277,7 @@ ProjectManager.Update = function (dt) {
         var project = deadList[i];
         Notify(project.name + '(은)는 시간이 지나 만료되었습니다.', NOTIFY_DANGER);
         RemoveProject(project.id);
+        WorkManager.ProjectTimeout(project.id);
         delete ProjectManager.list[i];
     }
 

@@ -99,12 +99,13 @@ function ShowCharDetail(parentEle, id) {
     $("#charDetail").modal();
 }
 
-function AddWork(id, name, workAmount, tagList) {
+function AddWork(id, name, workAmount, charMax, tagList) {
     var html = $("#workCardTemplate").clone().html();
     html = $(html).attr('data-id', id);
 
     var ele = $("#workList").append(html).find('.workCard[data-id=' + id + ']');
     $(ele).find('.workName').text(name);
+    $(ele).find('.workCharMax').text(charMax);
     $(ele).find('.workAmount').text(workAmount);
 
     ele.find('[data-id]').each(function () {
@@ -220,7 +221,17 @@ function RefreshGachaBtn(date) {
     }
     else {
         var date = new Date(left);
-        $("#btnGacha").text('직원 가챠 [' + (date.getMinutes()) + '분 남음]');
+
+        var sec = Math.round(date.getTime() / 1000);
+        var min = sec / 60;
+        sec = sec % 60;
+
+        if (min > 1)
+            $("#btnGacha").text('직원 가챠 [' + min + '분 남음]');
+        else
+            $("#btnGacha").text('직원 가챠 [' + sec + '초 남음]');
+
+
         $('#btnGacha').prop('disabled', true);
     }
 }
@@ -256,11 +267,14 @@ function Notify(message, type) {
 
 function RefreshCharCard(charObj) {
     var ele = $(".charCard[data-id=" + charObj.id + "]");
-    if (charObj.allowedWorkId == -1)
+    if (charObj.allowedWorkId == -1) {
         ele.find(".charAllowedWork").text('업무 미할당');
+        ele.removeClass('charCardWorking');
+    }
     else {
         var workObj = WorkManager.GetById(charObj.allowedWorkId);
         ele.find(".charAllowedWork").text(workObj.name);
+        ele.addClass('charCardWorking');
     }
 }
 
@@ -447,9 +461,14 @@ $(document).ready(function () {
         }
 
         var workId = $(this).attr('data-id');
+        var workObj = WorkManager.GetById(workId);
+
+        if (!workObj.CanAddChar()) {
+            Notify('해당 업무에 더이상 유저를 추가할 수 없습니다.', NOTIFY_DANGER);
+            return;
+        }
         charObj.AllowWork(workId);
 
-        var workObj = WorkManager.GetById(workId);
         workObj.AddChar(charObj);
 
         RefreshCharCard(charObj);

@@ -190,6 +190,19 @@ CharManager.WorkRemoved = function (id) {
     }
 };
 
+CharManager.GetWorkCnt = function (workId) {
+    var cnt = 0;
+    var i;
+    for (i in CharManager.list) {
+        var charObj = CharManager.list[i];
+        if (charObj.allowedWorkId == workId) {
+            cnt++;
+        }
+    }
+
+    return cnt;
+};
+
 CharManager.PayDay = function () {
     var i;
     var pay = 0;

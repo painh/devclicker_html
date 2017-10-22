@@ -4,8 +4,16 @@ var Work = function (proto) {
     this.workAmount = 0;
     this.workAmountMax = proto.workAmount;
     this.parentProjectId = proto.parentProjectId;
+    this.charMax = 1;
 
     this.tagList = proto.tagList.slice(0);
+
+    var tagCnt = 0;
+    var i;
+    for (i in this.tagList)
+        tagCnt++;
+
+    this.charMax += Math.round(tagCnt / 2);
 };
 
 Work.id = 0;
@@ -28,13 +36,23 @@ Work.prototype.Work = function (d, bonus) {
         EnableWorkDone(this.id);
 };
 
+Work.prototype.CanAddChar = function () {
+    if (CharManager.GetWorkCnt(this.id) >= this.charMax)
+        return false;
+
+    if (this.HaveWorkDone())
+        return false;
+
+    return true;
+};
+
 var WorkManager = {
     list: {}
 };
 
 WorkManager.Add = function (newObj) {
     WorkManager.list[newObj.id] = newObj;
-    AddWork(newObj.id, newObj.name, newObj.workAmount, newObj.tagList);
+    AddWork(newObj.id, newObj.name, newObj.workAmountMax, newObj.charMax, newObj.tagList);
 };
 
 WorkManager.GetById = function (id) {
@@ -69,3 +87,7 @@ WorkManager.ProjectStart = function (projectObj) {
         }));
     }
 };
+
+WorkManager.ProjectTimeout = function(projectId) {
+
+}
