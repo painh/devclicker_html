@@ -263,10 +263,13 @@ function ChangeMentalFloatingText(charId, d, now, max) {
     FloatingText(ele, d, option);
 }
 
-function ChangeWorkFloatingText(workId, d, now, max) {
+function ChangeWorkFloatingText(workId, d, now, max, bonus) {
     var ele = $(".workCard[data-id=" + workId + "]").find('.progress');
     var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#00f', randomLeft: true};
     var percent = (now / max * 100) + '%';
+
+    if(bonus)
+        option.bg_color = '#ff0';
 
     ele.find(".progress-bar").attr('style', 'width:' + percent);
     ele.find(".progress-bar").text('업무진행[' + now + '/' + max + ']');

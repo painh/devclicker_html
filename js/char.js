@@ -43,7 +43,7 @@ Char.prototype.Update = function (dt) {
     if (workObj.HaveWorkDone())
         return;
 
-    workObj.Work(workPower);
+    workObj.Work(workPower, false);
     this.ChangeMental(-1);
 
     var i, j;
@@ -52,7 +52,7 @@ Char.prototype.Update = function (dt) {
         for (j in this.tagList) {
             var charTag = this.tagList[j];
             if (workTag.name == charTag.name) {
-                workObj.Work(workPower + Math.max(Math.round(workPower * ((charTag.lv - workTag.lv) / workTag.lv))), 0);
+                workObj.Work(workPower + Math.max(Math.round(workPower * ((charTag.lv - workTag.lv) / workTag.lv))), true);
             }
         }
     }

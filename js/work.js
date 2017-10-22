@@ -18,12 +18,12 @@ Work.prototype.HaveWorkDone = function () {
     return (this.workAmount >= this.workAmountMax);
 };
 
-Work.prototype.Work = function (d) {
+Work.prototype.Work = function (d, bonus) {
     if (this.HaveWorkDone())
         return;
 
     this.workAmount = Math.min(this.workAmount + d, this.workAmountMax);
-    ChangeWorkFloatingText(this.id, d, this.workAmount, this.workAmountMax);
+    ChangeWorkFloatingText(this.id, d, this.workAmount, this.workAmountMax, bonus);
     if (this.workAmount >= this.workAmountMax)
         EnableWorkDone(this.id);
 };
