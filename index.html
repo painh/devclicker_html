@@ -10,6 +10,33 @@
 </head>
 <body>
 
+
+<div id="gameResult" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Game Over!</h4>
+            </div>
+            <div class="modal-body">
+                <p>매출 총 액수 [<span id="gameSales"></span>]</p>
+                <p>폐업까지 버틴 일수 [<span id="gameDays"></span>]</p>
+                <p>해고 및 탈주한 직원의 수 [<span id="gameFiredCnt"></span>]</p>
+                <p>수주한 프로젝트의 수 [<span id="gameProjectCnt"></span>]</p>
+                <p>완료한 프로젝트의 수 [<span id="gameProjectDoneCnt"></span>]</p>
+                <p>수고하셨습니다!</p>
+                <p>다시 플레이 하시려면 브라우저를 새로고침 해 주세요!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
 <div id="charDetail" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -58,7 +85,7 @@
     <div class="grid">
         <div id="divTop" class="row">
             <div id="grandGameDevelop" class="col-md-12">
-                <h2>소지금$<span id="gameGold">0</span> 창립일로부터 <span id="gameDays">0</span> 일째</h2>
+                <h2>소지금 <span id="gameGold">$0</span> 창립일로부터 <span id="gameDays">0</span> 일째</h2>
                 <div>
                     <button id="btnGacha" type="button" class="btn btn-default btn-primary" disabled="true">직원 가챠
                     </button>

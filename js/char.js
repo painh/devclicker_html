@@ -81,6 +81,15 @@ Char.prototype.AllowWork = function (id) {
     this.allowedWorkId = id;
 };
 
+
+Char.prototype.PayDay = function () {
+    Quotes(this.id, EventManager.GetText('payday'));
+    Game.ChangeGold(-this.pay);
+
+    return this.pay;
+};
+
+
 var CharManager = {
     list: {}
 };
@@ -154,4 +163,15 @@ CharManager.WorkRemoved = function (id) {
             CharManager.Release(charObj.id);
         }
     }
+};
+
+CharManager.PayDay = function () {
+    var i;
+    var pay = 0;
+    for (i in CharManager.list) {
+        var charObj = CharManager.list[i];
+        pay += charObj.PayDay();
+    }
+
+    return pay;
 };

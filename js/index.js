@@ -38,6 +38,8 @@ function AddProject(id, name, workAmount, orderCost, profit) {
         $(this).attr('data-id', id);
     });
 
+    Game.projectCnt++;
+
     RefreshHeights();
 }
 
@@ -46,6 +48,8 @@ function RemoveChar(id) {
     ele.fadeOut(function () {
         $(this).remove();
     });
+
+    Game.fireCnt++;
 }
 
 function RemoveProject(id) {
@@ -193,7 +197,7 @@ function RefreshGachaBtn(date) {
 }
 
 function RefreshDays(days, d) {
-    var ele = $("#gameDays");
+    var ele = $("#grandGameDevelop").find("#gameDays");
     var option = {opacity: 0, delay: 1000, bg_color: '#EEE8AA', randomLeft: true};
     ele.text((days+ d));
 
@@ -273,9 +277,9 @@ function ChangeWorkFloatingText(workId, d, now, max) {
 }
 
 function ChangeGoldFloatingText(gold, d) {
-    var ele = $("#gameGold");
+    var ele = $("#grandGameDevelop").find("#gameGold");
     var option = {opacity: 0, delay: 1000, bg_color: '#EEE8AA', randomLeft: false};
-    ele.text((gold + d));
+    ele.text('$' + (gold + d));
 
     FloatingText(ele, d, option);
 }
@@ -296,6 +300,19 @@ function RefreshHeights() {
         $("#workList").outerHeight(height);
     if ($("#projectList").outerHeight() > height)
         $("#projectList").outerHeight(height);
+}
+
+function GameOver(){
+    var ele = $("#gameResult");
+    ele.find("#gameGold").text(Game.GetGold());
+    ele.find("#gameSales").text(Game.sales);
+    ele.find("#gameDays").text(Game.days);
+    ele.find("#gameCharCnt").text(Char.id);
+    ele.find("#gameFiredCnt").text(Game.projectCnt);
+    ele.find("#gameProjectCnt").text(Game.projectCnt);
+    ele.find("#gameProjectDoneCnt").text(Game.projectDoneCnt);
+
+    ele.modal();
 }
 
 $(document).ready(function () {
@@ -378,6 +395,8 @@ $(document).ready(function () {
         });
 
         ProjectManager.Remove(id);
+
+        Game.projectDoneCnt++;
     });
 
     $(document).on('click', '.btnCharAddToWork', function () {
