@@ -1,4 +1,4 @@
-var skillTagList = ['client', 'server', 'illust', 'qa', 'scenario', '3d'];
+var skillTagList = ['client', 'server', 'illust', 'qa', 'scenario', 'modeling', 'infra'];
 
 function AddChar(id, name, pay, imgSrc, tagList) {
     var html = $("#charCardTemplate").clone().html();
@@ -197,7 +197,7 @@ function RefreshGachaBtn(date) {
 function RefreshDays(days, d) {
     var ele = $("#grandGameDevelop").find("#gameDays");
     var option = {opacity: 0, delay: 1000, bg_color: '#EEE8AA', randomLeft: true};
-    ele.text((days+ d));
+    ele.text((days + d));
 
     FloatingText(ele, d, option);
 }
@@ -300,7 +300,7 @@ function RefreshHeights() {
         $("#projectList").outerHeight(height);
 }
 
-function GameOver(){
+function GameOver() {
     var ele = $("#gameResult");
     ele.find("#gameGold").text(Game.GetGold());
     ele.find("#gameSales").text(Game.sales);
@@ -312,7 +312,7 @@ function GameOver(){
 
     ele.modal();
 
-    $('button').attr('diabled', true);
+    $('button').attr('disabled', true);
 }
 
 $(document).ready(function () {
@@ -336,9 +336,8 @@ $(document).ready(function () {
     }, 1000);
 
     $("#btnGacha").click(function () {
-            var lv = 1;
-            var obj = Game.Gacha(lv);
-            Quotes(obj.id, "대사 테스트 가나다라");
+            var obj = Game.Gacha(Math.round(Game.sales / 100) + 1);
+            Quotes(obj.id, EventManager.GetText('join'));
         }
     );
 
@@ -433,7 +432,7 @@ $(document).ready(function () {
 
         $(this).attr('disabled', true);
 
-        $('.projectCard[data-id='+projectObj.id+']').addClass('projectCardProcess');
+        $('.projectCard[data-id=' + projectObj.id + ']').addClass('projectCardProcess');
         Game.projectCnt++;
     });
 

@@ -1,12 +1,101 @@
 var projectList = [
     {
+        name: '국가 산업 수주',
+        timeMin: 1000 * 60 * 2,
+        timeMax: 1000 * 60 * 5,
+        orderCostMin: 0,
+        orderCostMax: 0,
+        profitMin: 30,
+        profitMax: 50,
+        workList: [
+            {
+                name: '공문서 작성',
+                workAmountMin: 300,
+                workAmountMax: 500,
+                tagList: [],
+            },
+            {
+                name: '개발 환경 설정',
+                workAmountMin: 500,
+                workAmountMax: 900,
+                tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
+            },
+            {
+                name: '디자인',
+                workAmountMin: 500,
+                workAmountMax: 900,
+                tagList: [{name: 'illust', minLv: 1, maxLv: 2}, {name: 'modeling', minLv: 1, maxLv: 2}],
+            },
+            {
+                name: '프로그래밍',
+                workAmountMin: 1000,
+                workAmountMax: 1500,
+                tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
+            },
+            {
+                name: '공무원 실사 대응',
+                workAmountMin: 100,
+                workAmountMax: 200,
+                tagList: [],
+            },
+            {
+                name: 'QA',
+                workAmountMin: 1000,
+                workAmountMax: 1500,
+                tagList: [{name: 'qa', minLv: 1, maxLv: 2}],
+            },
+
+        ]
+    },
+    {
+        name: '모바일 앱 외주',
+        timeMin: 1000 * 60 * 2,
+        timeMax: 1000 * 60 * 5,
+        orderCostMin: 0,
+        orderCostMax: 0,
+        profitMin: 30,
+        profitMax: 50,
+        workList: [
+            {
+                name: '개발 환경 설정',
+                workAmountMin: 500,
+                workAmountMax: 900,
+                tagList: [{name: 'infra', minLv: 1, maxLv: 2}],
+            },
+            {
+                name: '디자인',
+                workAmountMin: 500,
+                workAmountMax: 900,
+                tagList: [{name: 'illust', minLv: 1, maxLv: 2}, {name: 'modeling', minLv: 1, maxLv: 2}],
+            },
+            {
+                name: '프로그래밍',
+                workAmountMin: 1000,
+                workAmountMax: 1500,
+                tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
+            },
+            {
+                name: 'QA',
+                workAmountMin: 1000,
+                workAmountMax: 1500,
+                tagList: [{name: 'qa', minLv: 1, maxLv: 2}],
+            },
+            {
+                name: '앱 등록과 심사',
+                workAmountMin: 1000,
+                workAmountMax: 1500,
+                tagList: [],
+            },
+        ]
+    },
+    {
         name: '동인 게임 개발',
         timeMin: 1000 * 60 * 2,
         timeMax: 1000 * 60 * 5,
-        orderCostMin: 100,
-        orderCostMax: 200,
-        profitMin: 150,
-        profitMax: 300,
+        orderCostMin: 10,
+        orderCostMax: 20,
+        profitMin: 30,
+        profitMax: 50,
         workList: [
             {
                 name: '원작 읽기',
@@ -19,7 +108,14 @@ var projectList = [
                 workAmountMin: 500,
                 workAmountMax: 900,
                 tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
-            }
+            },
+            {
+                name: 'QA',
+                workAmountMin: 1000,
+                workAmountMax: 1500,
+                tagList: [{name: 'qa', minLv: 1, maxLv: 2}],
+            },
+
         ]
     },
 ];

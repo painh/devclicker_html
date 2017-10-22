@@ -81,9 +81,6 @@ Char.prototype.AllowWork = function (id) {
 
 
 Char.prototype.PayDay = function () {
-    Quotes(this.id, EventManager.GetText('payday'));
-    Game.ChangeGold(-this.pay);
-
     return this.pay;
 };
 
@@ -122,6 +119,8 @@ CharManager.GetById = function (id) {
 CharManager.Fire = function (id) {
     delete CharManager.list[id];
     RemoveChar(id);
+
+    CharManager.AllCharQuotes('partyFired', -5);
 };
 
 CharManager.Msg = function (id, text) {
@@ -131,12 +130,19 @@ CharManager.Msg = function (id, text) {
 CharManager.Update = function (dt) {
     var i;
     var deadList = {};
+    var mentalOut = false;
 
     for (i in CharManager.list) {
         var char = CharManager.list[i];
         char.Update(dt);
-        if (char.isDead)
+        if (char.isDead) {
             deadList[char.id] = char;
+            mentalOut = true;
+        }
+    }
+
+    if (mentalOut) {
+        CharManager.AllCharQuotes('partyMentalOut', -5);
     }
 
     for (i in deadList) {
@@ -171,5 +177,17 @@ CharManager.PayDay = function () {
         pay += charObj.PayDay();
     }
 
+    CharManager.AllCharQuotes('payday', 20);
+
     return pay;
+};
+
+CharManager.AllCharQuotes = function (eventId, mentalD) {
+    for (i in CharManager.list) {
+        var char = CharManager.list[i];
+        if (char.isDead)
+            continue;
+        char.ChangeMental(mentalD);
+        Quotes(char.id, EventManager.GetText(eventId));
+    }
 };
