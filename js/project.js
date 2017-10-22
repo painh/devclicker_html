@@ -83,7 +83,7 @@ ProjectList.ProtoToSeed = function (protoId) {
         var tagList = [];
         for (j in work.tagList) {
             tag = work.tagList[j];
-            tagList.push({name: work.name, lv: randomRange(tag.minLv, tag.maxLv)});
+            tagList.push({name: tag.name, lv: randomRange(tag.minLv, tag.maxLv)});
         }
 
         workList.push({

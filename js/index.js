@@ -86,6 +86,7 @@ function AddWork(id, name, workAmount, tagList) {
     }
 
     ele.find('.workSkillList').html(html);
+    Notify(name + ' 업무가 추가되었습니다.', NOTIFY_INFO);
     RefreshHeights();
 }
 
@@ -196,7 +197,7 @@ function EnableWorkDone(id) {
 }
 
 var NOTIFY_SUCCESS = 'success';
-// var NOTIFY_INFO = 'info';
+var NOTIFY_INFO = 'info';
 // var NOTIFY_WARNING = 'warning';
 var NOTIFY_DANGER = 'danger';
 
