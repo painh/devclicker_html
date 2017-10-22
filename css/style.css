@@ -179,6 +179,10 @@ a {
     background-color: orange;
 }
 
+.projectCardProcess {
+    background-color: #ffaeae;
+}
+
 .projectCardDone {
     background-color: orange;
 }

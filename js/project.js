@@ -10,14 +10,14 @@ var projectList = [
         workList: [
             {
                 name: '원작 읽기',
-                workAmountMin: 500,
-                workAmountMax: 2000,
+                workAmountMin: 300,
+                workAmountMax: 500,
                 tagList: [],
             },
             {
                 name: '개발 환경 설정',
-                workAmountMin: 2000,
-                workAmountMax: 3000,
+                workAmountMin: 500,
+                workAmountMax: 900,
                 tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
             }
         ]
@@ -73,7 +73,7 @@ Project.prototype.ProcessWorkAmount = function (amount) {
 };
 
 Project.prototype.ChangeGoldAndNotify = function (gold, msg, notify) {
-    Notify(msg + '$' + gold + '(을)를 얻었습니다.', notify);
+    Notify(msg + '$' + gold + '(을)를 얻었습니다. 예상 수익은 $'+this.profit+' 이었습니다.', notify);
     Game.ChangeGold(gold);
 };
 
@@ -86,13 +86,13 @@ Project.prototype.Done = function () {
     if (result < 30) {
         this.ChangeGoldAndNotify(this.profit * 0.3, '게임이 완전히 망해버렸습니다...', NOTIFY_DANGER);
     } else if (result < 50) {
-        Notify(this.profit * 0.5, '게임이 망해버렸습니다...', NOTIFY_DANGER);
+        this.ChangeGoldAndNotify(this.profit * 0.5, '게임이 망해버렸습니다...', NOTIFY_DANGER);
     } else if (result < 80) {
-        Notify(this.profit, '게임이 예상한 만큼 팔렸네요!', NOTIFY_INFO);
+        this.ChangeGoldAndNotify(this.profit, '게임이 예상한 만큼 팔렸네요!', NOTIFY_INFO);
     } else if (result < 90) {
-        Notify(this.profit * 1.3, '게임이 생각보다 잘 팔렸습니다!', NOTIFY_SUCCESS);
+        this.ChangeGoldAndNotify(this.profit * 1.3, '게임이 생각보다 잘 팔렸습니다!', NOTIFY_SUCCESS);
     } else {
-        Notify(this.profit * 1.5, '게임이 생각보다 훨씬 잘 팔렸습니다!', NOTIFY_SUCCESS);
+        this.ChangeGoldAndNotify(this.profit * 1.5, '게임이 생각보다 훨씬 잘 팔렸습니다!', NOTIFY_SUCCESS);
     }
 };
 

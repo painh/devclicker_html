@@ -10,8 +10,6 @@ var Char = function (proto, skillTagCnt) {
     this.allowedWorkId = -1;
     this.isDead = false;
 
-    this.workPower = 1000;
-
     for (var i = 0; i < skillTagCnt; ++i) {
         var name = randomPick(skillTagList);
         if (this.tagList.hasOwnProperty(name))
@@ -46,7 +44,7 @@ Char.prototype.Update = function (dt) {
         return;
 
     workObj.Work(workPower);
-    this.ChangeMental(-10);
+    this.ChangeMental(-1);
 
     var i, j;
     for (i in workObj.tagList) {

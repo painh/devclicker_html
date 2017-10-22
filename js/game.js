@@ -11,14 +11,14 @@ Game.Create = function () {
     }
 
     Game.gold = 0;
-    Game.ChangeGold(200);
+    Game.ChangeGold(250);
     Game.days = 0;
     Game.daysTimer = now;
     Game.isOver = false;
 
     Game.sales = 0;
     Game.fireCnt = 0;
-    Game.projectCnt = 0;
+    Game.projectCnt = 0;3
     Game.projectDoneCnt = 0;
 
 //    Game.Gacha(1);

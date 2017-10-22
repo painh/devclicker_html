@@ -38,8 +38,6 @@ function AddProject(id, name, workAmount, orderCost, profit) {
         $(this).attr('data-id', id);
     });
 
-    Game.projectCnt++;
-
     RefreshHeights();
 }
 
@@ -308,11 +306,13 @@ function GameOver(){
     ele.find("#gameSales").text(Game.sales);
     ele.find("#gameDays").text(Game.days);
     ele.find("#gameCharCnt").text(Char.id);
-    ele.find("#gameFiredCnt").text(Game.projectCnt);
+    ele.find("#gameFiredCnt").text(Game.fireCnt);
     ele.find("#gameProjectCnt").text(Game.projectCnt);
     ele.find("#gameProjectDoneCnt").text(Game.projectDoneCnt);
 
     ele.modal();
+
+    $('button').attr('diabled', true);
 }
 
 $(document).ready(function () {
@@ -324,7 +324,7 @@ $(document).ready(function () {
         ShowCharDetail($(this), $(this).attr('data-id'));
     });
 
-    $(document).on('click', '.charCard', function () {
+    $(document).on('click', '.charCard[data-id]', function () {
         $('.charCard').removeClass('charCardSelected');
         $(this).addClass('charCardSelected');
     });
@@ -433,6 +433,8 @@ $(document).ready(function () {
 
         $(this).attr('disabled', true);
 
+        $('.projectCard[data-id='+projectObj.id+']').addClass('projectCardProcess');
+        Game.projectCnt++;
     });
 
     $(window).resize(function () {
