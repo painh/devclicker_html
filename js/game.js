@@ -1,5 +1,5 @@
 var Game = {};
-var GACHA_TIMER_MAX = 5 * 1000 * 60;
+var GACHA_TIMER_MAX = 0;
 
 Game.Create = function () {
     var now = new Date();
@@ -19,7 +19,6 @@ Game.Create = function () {
     Game.sales = 0;
     Game.fireCnt = 0;
     Game.projectCnt = 0;
-    3
     Game.projectDoneCnt = 0;
 
 //    Game.Gacha(1);
@@ -57,6 +56,8 @@ Game.Gacha = function (lv) {
     Notify('가챠를 뽑았습니다', NOTIFY_SUCCESS);
     Game.gachaTimer = new Date();
     var obj = CharManager.GenerateRandomChar(lv);
+
+    GACHA_TIMER_MAX += 10 * 1000;
     return obj;
 };
 

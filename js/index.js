@@ -221,7 +221,7 @@ function RefreshGachaBtn(date) {
     else {
         var date = new Date(left);
         $("#btnGacha").text('직원 가챠 [' + (date.getMinutes() + 1) + '분 남음]');
-//        $('#btnGacha').prop('disabled', true);
+        $('#btnGacha').prop('disabled', true);
     }
 }
 
@@ -372,6 +372,7 @@ $(document).ready(function () {
     $("#btnGacha").click(function () {
             var obj = Game.Gacha(Math.round(Game.sales / 100) + 1);
             Quotes(obj.id, EventManager.GetText('join'));
+            $('#btnGacha').prop('disabled', true);
         }
     );
 

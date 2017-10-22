@@ -16,20 +16,20 @@ var projectList = [
             },
             {
                 name: '개발 환경 설정',
-                workAmountMin: 500,
-                workAmountMax: 900,
+                workAmountMin: 300,
+                workAmountMax: 400,
                 tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
             },
             {
                 name: '디자인',
-                workAmountMin: 500,
-                workAmountMax: 900,
+                workAmountMin: 400,
+                workAmountMax: 500,
                 tagList: [{name: 'illust', minLv: 1, maxLv: 2}, {name: 'modeling', minLv: 1, maxLv: 2}],
             },
             {
                 name: '프로그래밍',
-                workAmountMin: 500,
-                workAmountMax: 900,
+                workAmountMin: 400,
+                workAmountMax: 500,
                 tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
             },
             {
@@ -40,8 +40,8 @@ var projectList = [
             },
             {
                 name: 'QA',
-                workAmountMin: 500,
-                workAmountMax: 900,
+                workAmountMin: 100,
+                workAmountMax: 200,
                 tagList: [{name: 'qa', minLv: 1, maxLv: 2}],
             },
 
