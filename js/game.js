@@ -12,6 +12,9 @@ Game.Create = function () {
 
     Game.gold = 0;
     Game.ChangeGold(200);
+    Game.days = 0;
+    Game.daysTimer = now;
+
 
 //    Game.Gacha(1);
 //    WorkManager.GenerateRandomWork(5);
@@ -26,6 +29,12 @@ Game.Update = function () {
 
     Game.prevTimer = now;
     RefreshGachaBtn(Game.gachaTimer);
+
+    if (now - Game.daysTimer > 5000) {
+        Game.days++;
+        Game.daysTimer = now;
+        RefreshDays(Game.days, 1);
+    }
 };
 
 Game.Gacha = function (lv) {

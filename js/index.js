@@ -192,13 +192,22 @@ function RefreshGachaBtn(date) {
     }
 }
 
+function RefreshDays(days, d) {
+    var ele = $("#gameDays");
+    var option = {opacity: 0, delay: 1000, bg_color: '#EEE8AA', randomLeft: true};
+    ele.text((days+ d));
+
+    FloatingText(ele, d, option);
+}
+
 function EnableWorkDone(id) {
     $('.workCard[data-id=' + id + ']').find(".btnWorkDone").attr('disabled', false);
+    $('.workCard[data-id=' + id + ']').addClass('workCardDone');
 }
 
 var NOTIFY_SUCCESS = 'success';
 var NOTIFY_INFO = 'info';
-// var NOTIFY_WARNING = 'warning';
+var NOTIFY_WARNING = 'warning';
 var NOTIFY_DANGER = 'danger';
 
 function Notify(message, type) {
@@ -222,7 +231,6 @@ function RefreshCharCard(charObj) {
     }
 }
 
-
 function RefreshProjectCard(projectObj, timePercent, leftDate) {
     var ele = $(".projectCard[data-id=" + projectObj.id + "]").find('.progress');
     ele.find(".progress-bar.leftTime").attr('style', 'width:' + timePercent + '%');
@@ -230,7 +238,7 @@ function RefreshProjectCard(projectObj, timePercent, leftDate) {
 
     var percent = (projectObj.workAmount / projectObj.workAmountMax) * 100;
     ele.find(".progress-bar.workAmount").attr('style', 'width:' + percent + '%');
-    ele.find(".progress-bar.workAmount").text('업무량[' + projectObj.workAmount +"/"+ projectObj.workAmountMax + ']' );
+    ele.find(".progress-bar.workAmount").text('업무량[' + projectObj.workAmount + "/" + projectObj.workAmountMax + ']');
 }
 
 function AddCharFaceToWork(workId, charObj) {
@@ -266,10 +274,15 @@ function ChangeWorkFloatingText(workId, d, now, max) {
 
 function ChangeGoldFloatingText(gold, d) {
     var ele = $("#gameGold");
-    var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#EEE8AA', randomLeft: false};
-    ele.text('$' + (gold + d));
+    var option = {opacity: 0, delay: 1000, bg_color: '#EEE8AA', randomLeft: false};
+    ele.text((gold + d));
 
     FloatingText(ele, d, option);
+}
+
+function ProjectDone(id) {
+    $(".projectCard[data-id=" + id + "]").find('.btnProjectDone').attr('disabled', false);
+    $('.projectCard[data-id=' + id + ']').addClass('projectCardDone');
 }
 
 function RefreshHeights() {
@@ -351,6 +364,20 @@ $(document).ready(function () {
             $(this).remove();
         });
 
+    });
+
+    $(document).on('click', '.btnProjectDone', function () {
+        var id = $(this).attr('data-id');
+        var projectObj = ProjectManager.GetById(id);
+        Notify(projectObj.name + "(을)를 완료 했습니다!", NOTIFY_SUCCESS);
+
+        projectObj.Done();
+
+        $(".projectCard[data-id=" + id + "]").fadeOut(function () {
+            $(this).remove();
+        });
+
+        ProjectManager.Remove(id);
     });
 
     $(document).on('click', '.btnCharAddToWork', function () {

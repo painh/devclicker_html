@@ -65,8 +65,35 @@ Project.prototype.Update = function () {
         this.isDead = true;
 };
 
-Project.prototype.ProcessWorkAmount = function(amount) {
+Project.prototype.ProcessWorkAmount = function (amount) {
     this.workAmount += amount;
+
+    if (this.workAmount >= this.workAmountMax)
+        ProjectDone(this.id);
+};
+
+Project.prototype.ChangeGoldAndNotify = function (gold, msg, notify) {
+    Notify(msg + '$' + gold + '(을)를 얻었습니다.', notify);
+    Game.ChangeGold(gold);
+};
+
+Project.prototype.Done = function () {
+    var now = new Date();
+    var max = new Date(this.time + this.createAt.getTime());
+    var percent = (max.getTime() - now.getTime()) / this.time * 100;
+    var result = randomRange(0, 100) + (percent / 10);
+
+    if (result < 30) {
+        this.ChangeGoldAndNotify(this.profit * 0.3, '게임이 완전히 망해버렸습니다...', NOTIFY_DANGER);
+    } else if (result < 50) {
+        Notify(this.profit * 0.5, '게임이 망해버렸습니다...', NOTIFY_DANGER);
+    } else if (result < 80) {
+        Notify(this.profit, '게임이 예상한 만큼 팔렸네요!', NOTIFY_INFO);
+    } else if (result < 90) {
+        Notify(this.profit * 1.3, '게임이 생각보다 잘 팔렸습니다!', NOTIFY_SUCCESS);
+    } else {
+        Notify(this.profit * 1.5, '게임이 생각보다 훨씬 잘 팔렸습니다!', NOTIFY_SUCCESS);
+    }
 };
 
 var ProjectManager = {

@@ -173,3 +173,12 @@ a {
 .charCardSelected {
     background-color: orange;
 }
+
+
+.workCardDone {
+    background-color: orange;
+}
+
+.projectCardDone {
+    background-color: orange;
+}
