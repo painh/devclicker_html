@@ -1,10 +1,8 @@
 var projectList = [
     {
         name: '국가 산업 수주',
-        // timeMin: 1000 * 60 * 2,
-        // timeMax: 1000 * 60 * 5,
-        timeMin: 1000  * 20 ,
-        timeMax: 1000  * 20,
+        timeMin: 1000 * 60 * 4,
+        timeMax: 1000 * 60 * 10,
         orderCostMin: 0,
         orderCostMax: 0,
         profitMin: 60,
@@ -51,8 +49,8 @@ var projectList = [
     },
     {
         name: '모바일 앱 외주',
-        timeMin: 1000 * 60 * 2,
-        timeMax: 1000 * 60 * 5,
+        timeMin: 1000 * 60 * 4,
+        timeMax: 1000 * 60 * 10,
         orderCostMin: 0,
         orderCostMax: 0,
         profitMin: 60,
@@ -92,8 +90,8 @@ var projectList = [
     },
     {
         name: '동인 게임 개발',
-        timeMin: 1000 * 60 * 2,
-        timeMax: 1000 * 60 * 5,
+        timeMin: 1000 * 60 * 4,
+        timeMax: 1000 * 60 * 10,
         orderCostMin: 10,
         orderCostMax: 20,
         profitMin: 60,
