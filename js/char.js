@@ -6,7 +6,7 @@ var Char = function (proto, skillTagCnt) {
     this.workPower = proto.workPower;
     this.mental = this.mentalMax;
     this.imgSrc = 'assets/mon/mon_' + FormatNumberLength(proto.imgNumber, 3) + '.png';
-    this.tagList = [];
+    this.tagList = {};
     this.allowedWorkId = -1;
     this.isDead = false;
 
@@ -84,6 +84,27 @@ Char.prototype.PayDay = function () {
     return this.pay;
 };
 
+Char.prototype.GetSkillTag = function (tagName) {
+    var i;
+    for (i in this.tagList) {
+        if (this.tagList[i].name == tagName)
+            return this.tagList[i];
+    }
+
+    return false;
+};
+Char.prototype.TagLvUp = function (tagName, d) {
+    var i;
+
+    for (i in this.tagList) {
+        if (this.tagList[i].name == tagName) {
+            this.tagList[i].lv += d;
+            return;
+        }
+    }
+
+    this.tagList[tagName] = {name: tagName, lv: d};
+};
 
 var CharManager = {
     list: {}

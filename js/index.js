@@ -1,5 +1,43 @@
 var skillTagList = ['client', 'server', 'illust', 'qa', 'scenario', 'modeling', 'infra'];
 
+function RefreshCharTagList(id) {
+    var ele = $('.charCard[data-id=' + id + ']');
+    var char = CharManager.GetById(id);
+
+    var i;
+    var html = '';
+
+    for (i in char.tagList) {
+        var tag = char.tagList[i];
+        html += '<div class="skillTag">' + tag.name + '[' + tag.lv + ']</div>';
+    }
+
+    ele.find('.skillTagList').html(html);
+
+//modal
+
+    ele = $("#charDetail");
+    ele.find('#charName').text(char.name);
+    html = '';
+
+    for (i in skillTagList) {
+        var tag = skillTagList[i];
+        html += '<div class="col-md-12"><div class="skillTag  col-md-3">' + tag + '</div>';
+        var charTag = char.GetSkillTag(tag);
+        var lv = 0;
+        if (charTag !== false)
+            lv = charTag.lv;
+        html += '<button data-id data-tag="' + tag + '" class="btn btn-xs col-md-3 btnSkillUp">Lv. ' + lv + '레벨 올리기</button>';
+        html += '</div>';
+    }
+
+    ele.find("#skillList").html(html);
+
+    ele.find('[data-id]').each(function () {
+        $(this).attr('data-id', id);
+    });
+}
+
 function AddChar(id, name, pay, imgSrc, tagList) {
     var html = $("#charCardTemplate").clone().html();
     html = $(html).attr('data-id', id);
@@ -8,19 +46,12 @@ function AddChar(id, name, pay, imgSrc, tagList) {
     $(ele).find('.charName').text(name);
     $(ele).find('.charPay').text(pay);
     $(ele).find('.charFace').attr('src', imgSrc);
-
+    RefreshCharTagList(id);
     ele.find('[data-id]').each(function () {
         $(this).attr('data-id', id);
     });
 
-    var i;
-    html = '';
-    for (i in tagList) {
-        var tag = tagList[i];
-        html += '<div class="skillTag">' + tag.name + '[' + tag.lv + ']</div>';
-    }
 
-    ele.find('.skillTagList').html(html);
     RefreshHeights();
 }
 
@@ -59,11 +90,11 @@ function RemoveProject(id) {
 
 function ShowCharDetail(parentEle, id) {
     var char = CharManager.GetById(id);
-    $("#charDetail").find('#charName').text(char.name);
+    var ele = $("#charDetail");
 
-    $("#charDetail").find('[data-id]').each(function () {
-        $(this).attr('data-id', id);
-    });
+    ele.find('#charName').text(char.name);
+
+    RefreshCharTagList(char.id);
 
     $("#charDetail").modal();
 }
@@ -268,7 +299,7 @@ function ChangeWorkFloatingText(workId, d, now, max, bonus) {
     var option = {top: ele.offset().top - 20, opacity: 0, delay: 1000, bg_color: '#00f', randomLeft: true};
     var percent = (now / max * 100) + '%';
 
-    if(bonus)
+    if (bonus)
         option.bg_color = '#ff0';
 
     ele.find(".progress-bar").attr('style', 'width:' + percent);
@@ -444,4 +475,34 @@ $(document).ready(function () {
     });
 
     RefreshHeights();
+
+    $(document).on('click', '.btnSkillUp', function () {
+        var tag = $(this).attr('data-tag');
+        var id = $(this).attr('data-id');
+
+        var charObj = CharManager.GetById(id);
+        if (!charObj)
+            return;
+
+        var charTag = charObj.GetSkillTag(tag);
+        var needGold = 20;
+
+        if (charTag === false) {
+            needGold = 100;
+        }
+        if (Game.gold < needGold) {
+            Notify('소지금이 부족하여 스킬을 배울수 없습니다.', NOTIFY_DANGER);
+            return;
+        }
+
+        if (charObj.mental < 50) {
+            Notify('멘탈이 부족하여 스킬을 배울수 없습니다.', NOTIFY_DANGER);
+            return;
+        }
+
+        charObj.TagLvUp(tag, 1);
+        RefreshCharTagList(charObj.id);
+        Game.ChangeGold(-needGold);
+        charObj.ChangeMental(-50);
+    });
 });

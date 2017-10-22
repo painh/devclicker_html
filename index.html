@@ -37,7 +37,6 @@
 </div>
 
 
-
 <div id="charDetail" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -48,6 +47,14 @@
             <div class="modal-body">
                 <p><span> 캐릭터 이름 [</span><span id="charName">charName</span>]</p>
                 <p><span> 임금 </span> <span id="charPay">charPay</span></p>
+                <p>0레벨에서 1로 올리는데는 $100이, 그 외엔 레벨업 하는데는 $20이 듭니다.</p>
+                <p>또한, 멘탈 수치가 50 떨어집니다.</p>
+                <div class="grid">
+                    <div class="row">
+                        <div id='skillList' class="col-md-12">
+                        </div>
+                    </div>
+                </div>
                 <button id='charRelease' data-id='' type="button" class="btn btn-warning">업무해제</button>
                 <button id='charFire' data-id='' type="button" class="btn btn-danger">해고</button>
             </div>

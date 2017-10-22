@@ -28,8 +28,8 @@ var projectList = [
             },
             {
                 name: '프로그래밍',
-                workAmountMin: 1000,
-                workAmountMax: 1500,
+                workAmountMin: 500,
+                workAmountMax: 900,
                 tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
             },
             {
@@ -40,8 +40,8 @@ var projectList = [
             },
             {
                 name: 'QA',
-                workAmountMin: 1000,
-                workAmountMax: 1500,
+                workAmountMin: 500,
+                workAmountMax: 900,
                 tagList: [{name: 'qa', minLv: 1, maxLv: 2}],
             },
 
@@ -70,20 +70,20 @@ var projectList = [
             },
             {
                 name: '프로그래밍',
-                workAmountMin: 1000,
-                workAmountMax: 1500,
+                workAmountMin: 500,
+                workAmountMax: 900,
                 tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
             },
             {
                 name: 'QA',
-                workAmountMin: 1000,
-                workAmountMax: 1500,
+                workAmountMin: 500,
+                workAmountMax: 900,
                 tagList: [{name: 'qa', minLv: 1, maxLv: 2}],
             },
             {
                 name: '앱 등록과 심사',
-                workAmountMin: 1000,
-                workAmountMax: 1500,
+                workAmountMin: 500,
+                workAmountMax: 900,
                 tagList: [],
             },
         ]
@@ -110,12 +110,29 @@ var projectList = [
                 tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
             },
             {
+                name: '디자인',
+                workAmountMin: 500,
+                workAmountMax: 900,
+                tagList: [{name: 'illust', minLv: 1, maxLv: 2}, {name: 'modeling', minLv: 1, maxLv: 2}],
+            },
+            {
+                name: '프로그래밍',
+                workAmountMin: 500,
+                workAmountMax: 900,
+                tagList: [{name: 'client', minLv: 1, maxLv: 2}, {name: 'server', minLv: 1, maxLv: 2}],
+            },
+            {
                 name: 'QA',
-                workAmountMin: 1000,
-                workAmountMax: 1500,
+                workAmountMin: 500,
+                workAmountMax: 900,
                 tagList: [{name: 'qa', minLv: 1, maxLv: 2}],
             },
-
+            {
+                name: '행사장 업무 처리',
+                workAmountMin: 300,
+                workAmountMax: 500,
+                tagList: [{}],
+            }
         ]
     },
 ];
@@ -169,7 +186,7 @@ Project.prototype.ProcessWorkAmount = function (amount) {
 };
 
 Project.prototype.ChangeGoldAndNotify = function (gold, msg, notify) {
-    Notify(msg + '$' + gold + '(을)를 얻었습니다. 예상 수익은 $'+this.profit+' 이었습니다.', notify);
+    Notify(msg + '$' + gold + '(을)를 얻었습니다. 예상 수익은 $' + this.profit + ' 이었습니다.', notify);
     Game.ChangeGold(gold);
 };
 
