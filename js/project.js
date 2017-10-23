@@ -7,6 +7,7 @@ var projectList = [
         orderCostMax: 0,
         profitMin: 60,
         profitMax: 100,
+        costRate: [5, 5, 50, 30, 10],
         workList: [
             {
                 name: '공문서 작성',
@@ -55,6 +56,7 @@ var projectList = [
         orderCostMax: 0,
         profitMin: 60,
         profitMax: 100,
+        costRate: [5, 5, 50, 30, 10],
         workList: [
             {
                 name: '개발 환경 설정',
@@ -96,6 +98,7 @@ var projectList = [
         orderCostMax: 20,
         profitMin: 60,
         profitMax: 100,
+        costRate: [5, 5, 50, 30, 10],
         workList: [
             {
                 name: '원작 읽기',
@@ -147,6 +150,8 @@ var Project = function (proto) {
     this.time = proto.time;
     this.createAt = new Date();
 
+    this.costRate = proto.costRate;
+
     this.workAmount = 0;
     this.workAmountMax = 0;
     this.workList = proto.workList.slice(0);
@@ -194,18 +199,25 @@ Project.prototype.Done = function () {
     var now = new Date();
     var max = new Date(this.time + this.createAt.getTime());
     var percent = (max.getTime() - now.getTime()) / this.time * 100;
-    var result = randomRange(0, 100) + (percent / 10);
+    var i;
+    var costTable = [[Math.round(this.profit * 0.3), '게임이 완전히 망해버렸습니다...', NOTIFY_DANGER],
+        [Math.round(this.profit * 0.5), '게임이 망해버렸습니다...', NOTIFY_DANGER],
+        [Math.round(this.profit), '게임이 예상한 만큼 팔렸네요!', NOTIFY_INFO],
+        [Math.round(this.profit * 1.3), '게임이 생각보다 잘 팔렸습니다!', NOTIFY_SUCCESS],
+        [Math.round(this.profit * 1.5), '게임이 생각보다 훨씬 잘 팔렸습니다!', NOTIFY_SUCCESS]];
 
-    if (result < 30) {
-        this.ChangeGoldAndNotify(this.profit * 0.3, '게임이 완전히 망해버렸습니다...', NOTIFY_DANGER);
-    } else if (result < 50) {
-        this.ChangeGoldAndNotify(this.profit * 0.5, '게임이 망해버렸습니다...', NOTIFY_DANGER);
-    } else if (result < 80) {
-        this.ChangeGoldAndNotify(this.profit, '게임이 예상한 만큼 팔렸네요!', NOTIFY_INFO);
-    } else if (result < 90) {
-        this.ChangeGoldAndNotify(this.profit * 1.3, '게임이 생각보다 잘 팔렸습니다!', NOTIFY_SUCCESS);
-    } else {
-        this.ChangeGoldAndNotify(this.profit * 1.5, '게임이 생각보다 훨씬 잘 팔렸습니다!', NOTIFY_SUCCESS);
+    var costTotal = 0;
+    for (i = 0; i < this.costRate.length; ++i)
+        costTotal += this.costRate[i];
+
+    var costRandom = Math.min(costTotal - 1, randomRange(0, costTotal) + Math.round(percent / 10));
+    var costAdd = 0;
+    for (i = 0; i < this.costRate.length; ++i) {
+        costAdd += this.costRate[i];
+        if (costRandom < costAdd) {
+            this.ChangeGoldAndNotify(costTable[i][0], costTable[i][1], costTable[i][2]);
+            return;
+        }
     }
 };
 
@@ -238,6 +250,7 @@ ProjectManager.ProtoToSeed = function (protoId) {
         time: randomRange(proto.timeMin, proto.timeMax),
         orderCost: randomRange(proto.orderCostMin, proto.orderCostMax),
         profit: randomRange(proto.profitMin, proto.profitMax),
+        costRate : proto.costRate,
         workList: workList,
     };
 };

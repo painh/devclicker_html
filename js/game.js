@@ -11,7 +11,7 @@ Game.Create = function () {
     }
 
     Game.gold = 0;
-    Game.ChangeGold(100);
+    Game.ChangeGold(150);
     Game.days = 0;
     Game.daysTimer = now;
     Game.isOver = false;

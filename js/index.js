@@ -409,7 +409,7 @@ $(document).ready(function () {
         var workId = charObj.allowedWorkId;
         CharManager.Release(id);
 
-        $(".workCard[data-id=" + workId + "]").find(".charFace").fadeOut(function () {
+        $(".workCard[data-id=" + workId + "]").find(".charFace[data-id="+id+"]").fadeOut(function () {
             $(this).remove();
         });
 
